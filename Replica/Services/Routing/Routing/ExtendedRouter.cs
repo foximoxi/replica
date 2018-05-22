@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using X.Config;
 using X.Public;
 
-namespace Diablo
+namespace Replica
 {
     public static class ExtendedRouter
     {

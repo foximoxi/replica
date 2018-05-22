@@ -28,14 +28,14 @@ namespace Replica
             services.AddRouting();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, X.Services.IRoutingTableService routingTableService, X.Services.ICommandService cmdService, X.Services.ISecurityService securityService, X.Services.IRequestResponseService responseService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseExtendedRouter(routingTableService, cmdService, securityService, responseService);
         }
     }
 }
