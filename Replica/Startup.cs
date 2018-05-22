@@ -22,7 +22,10 @@ namespace Replica
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddSingleton<X.Services.IFileWatchService, X.Services.FileWatchService>();
+            services.AddSingleton<X.Services.IRoutingTableService, X.Services.RoutingTableService>();
+            services.AddSingleton<X.Services.IRequestResponseService, X.Services.RequestResponseService>();
+            services.AddRouting();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
