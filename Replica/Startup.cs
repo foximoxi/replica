@@ -26,6 +26,7 @@ namespace Replica
             services.AddSingleton<X.Services.IRoutingTableService, X.Services.RoutingTableService>();
             services.AddSingleton<X.Services.IRequestResponseService, X.Services.RequestResponseService>();
             services.AddSingleton<X.Services.ICommandService, X.Services.CommandService>();
+            services.AddSingleton<X.Services.IConfigurationUpdateService, X.Services.ConfigurationUpdateService>();
             services.AddRouting();
         }
 

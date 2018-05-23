@@ -12,7 +12,6 @@ namespace X.Config.Update
         List<string> CompiledFiles { get; set; }
 
         List<DataSource> DataSources { get; }
-        //List<Structure> Structures { get; }
         List<ViewDefinition> Views { get; }
         List<ViewDefinition> TypedViews { get; }
         List<InsertDefinition> TypedPosts { get; }
@@ -26,17 +25,12 @@ namespace X.Config.Update
 
         bool DeserializeAll();
         void RecognizeFiles();
-
-        //ICollection<X.Public.ValidationInfo> PackageValidationOutput { get; }
     }
 
     public enum FileType
     {
         Unknown,
-        JsonSettings,
-        JsonView,
-        Binary,
-        DataSource,
-        XmlStructure
+        JsonPlainFile,
+        ReverseProxyConfig,
     }
 }

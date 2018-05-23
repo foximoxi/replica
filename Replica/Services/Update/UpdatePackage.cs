@@ -68,20 +68,6 @@ namespace X.Services.Update
                 case FileType.Unknown:
                     DetectFile(fileName);
                     break;
-                case FileType.DataSource:
-                    DeserializeJsonDataSource(fileName);
-                    break;
-                case FileType.JsonSettings:
-                    break;
-                case FileType.JsonView:
-                    DeserializeJsonView(fileName);
-                    break;
-                case FileType.XmlStructure:
-                    DeserializeXmlStructure(fileName);
-                    break;
-                case FileType.Binary:
-                    CompiledFiles.Add(fileName);
-                    break;
             }
         }
 
@@ -90,101 +76,10 @@ namespace X.Services.Update
             var f = System.IO.File.ReadAllText(fileName, System.Text.Encoding.UTF8);
 
             var ext = System.IO.Path.GetExtension(fileName);
-            if (ext == ".settings")
+            if (ext == ".json")
             {
-                return;
+                RecognizedFiles[fileName] = FileType.JsonPlainFile;
             }
-            if (ext == ".dll")
-            {
-                RecognizedFiles[fileName] = FileType.Binary;
-                CompiledFiles.Add(fileName);
-                return;
-            }
-
-            switch (f[0])
-            {
-                case '<':
-                    {
-                        if (DeserializeXmlStructure(fileName, false))
-                            RecognizedFiles[fileName] = FileType.XmlStructure;
-                        else
-                            throw new Exception("undetected format for file " + fileName);
-                    }
-                    break;
-                case '{':
-                    {
-                        var t = DetectJson(fileName);
-                        if (t==FileType.JsonView)
-                            DeserializeJsonView(fileName);
-                        else
-                            DeserializeJsonDataSource(fileName);
-                        RecognizedFiles[fileName] = t;
-                    }
-                    break;
-            }
-        }
-
-        FileType DetectJson(string fileName)
-        {
-            var json=JObject.Parse(System.IO.File.ReadAllText(fileName, System.Text.Encoding.UTF8));
-            if ((json["engine"] != null) && (json["connectionString"] != null))
-                return FileType.DataSource;
-            if ((json["query"] != null) && (json["uri"] != null))
-                return FileType.JsonView;
-            throw new Exception("undetected format for file " + fileName);
-        }
-
-        bool DeserializeXmlStructure(string fileName, bool throwIfInvalid = true)
-        {
-            try
-            {
-                var structure = fileSerializer.DeserializeFromDisk<Structure>(fileName, X.Helpers.SerializationType.XML, System.Text.Encoding.UTF8);
-                this.Structures.Add(structure);
-            }
-            catch (Exception ex)
-            {
-                if (throwIfInvalid)
-                    throw ex;
-                else
-                    return false;
-            }
-            return true;
-        }
-
-
-        X.Helpers.JsonHelper jsonHelper { get; set; } = new X.Helpers.JsonHelper();
-        bool DeserializeJsonDataSource(string fileName, bool throwInvalid = true)
-        {
-            try
-            {
-                var res = jsonHelper.DeserializeFromDisk<X.Config.DataSource>(fileName);
-                DataSources.Add(res);
-            }
-            catch (Exception ex)
-            {
-                if (throwInvalid)
-                    throw ex;
-                else
-                    return false;
-            }
-            return true;
-        }
-
-        bool DeserializeJsonView(string viewFile, bool throwInvalid = true)
-        {
-            try
-            {
-                var res = jsonHelper.DeserializeFromDisk<X.Config.ViewDefinition>(viewFile);
-                Views.Add(res);
-            }
-            catch (Exception ex)
-            {
-                if (throwInvalid)
-                    throw ex;
-                else
-                    return false;
-            }
-            return true;
         }
 
         void InitLists()
