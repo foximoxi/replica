@@ -47,7 +47,7 @@ namespace X.Services
             {
                 lastPathChanged = e.FullPath;
                 lastNotifyTime = DateTime.Now;
-                if (lastPathChanged.EndsWith(".settings", StringComparison.CurrentCultureIgnoreCase))
+                if (lastPathChanged.EndsWith(".cfg", StringComparison.CurrentCultureIgnoreCase))
                     NotifySettingsChanges();
                 else
                     NotifyConfigurationChange();
@@ -56,15 +56,12 @@ namespace X.Services
 
         public void NotifyConfigurationChange()
         {
-            var pkg = new Update.UpdatePackage() { AllFiles = GetAllFiles() };
-            pkg.RecognizedFiles = RecognizedFiles;
-            updateService.UpdateConfiguration(pkg);
-            RecognizedFiles = pkg.RecognizedFiles;
+            updateService.UpdateConfiguration(new Update.UpdatePackage(GetAllFiles()));            
         }
 
         void NotifyAllSettingsChanges()
         {
-            var settings=GetPackageFiles("*.settings");
+            var settings=GetPackageFiles("*.cfg");
             if (settings!=null)
                 updateService.UpdateSettings(settings);
         }
@@ -73,10 +70,6 @@ namespace X.Services
         {
             updateService.UpdateSettings(new string[] { lastPathChanged });
         }
-
-        Dictionary<string, X.Config.Update.FileType> RecognizedFiles { get; set; } = new Dictionary<string, Config.Update.FileType>();
-
-        
 
         ICollection<string> GetAllFiles()
         {

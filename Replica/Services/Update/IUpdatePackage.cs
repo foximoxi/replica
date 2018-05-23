@@ -7,7 +7,7 @@ namespace X.Config.Update
 {
     public interface IUpdatePackage
     {
-        ICollection<string> AllFiles { get; set; }
+        ICollection<string> UnrecognizedFiles { get; set; }
         Dictionary<string, FileType> RecognizedFiles { get; set; }
         List<string> CompiledFiles { get; set; }
 

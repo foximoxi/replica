@@ -9,8 +9,8 @@ namespace X.Services.Update
 {
     public class UpdatePackage : X.Config.Update.IUpdatePackage
     {
-        public ICollection<string> AllFiles { get; set; }
-        public Dictionary<string, FileType> RecognizedFiles { get; set; }= new Dictionary<string, FileType>();
+        public ICollection<string> UnrecognizedFiles { get; set; }
+        public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
         public List<string> CompiledFiles { get; set; } = new List<string>();
 
         public List<X.Config.DataSource> DataSources { get; private set; } = new List<DataSource>();
@@ -30,6 +30,13 @@ namespace X.Services.Update
         private StructureValidator structureValidator = new StructureValidator();
 
         X.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();
+
+
+        public UpdatePackage(ICollection<string> allFiles)
+        {
+            this.UnrecognizedFiles = allFiles;
+            RecognizeFiles();
+        }
 
         public bool DeserializeAll()
         {
@@ -52,12 +59,12 @@ namespace X.Services.Update
 
         public void RecognizeFiles()
         {
-            foreach (var f in AllFiles)
+            foreach (var f in UnrecognizedFiles)
             {
-                    if (RecognizedFiles.ContainsKey(f))
-                        AddToPackage(f, RecognizedFiles[f]);
-                    else
-                        AddToPackage(f);
+                if (RecognizedFiles.ContainsKey(f))
+                    AddToPackage(f, RecognizedFiles[f]);
+                else
+                    AddToPackage(f);
             }
         }
 

@@ -15,11 +15,13 @@ namespace X.Services
     {
         IFileWatchService FileWatchService { get; set; }
         IRoutingTableService RoutingTableService { get; set; }
+        IStatusServices StatusServices { get; set; }
         public ILogger Log { get; private set; }
-        public CommandService(IFileWatchService fileWatchService, IRoutingTableService routingTableService)
+        public CommandService(IFileWatchService fileWatchService, IRoutingTableService routingTableService, IStatusServices statusServices)
         {
             FileWatchService = fileWatchService;
             RoutingTableService = routingTableService;
+            StatusServices = statusServices;
             Init();
         }
 
@@ -109,8 +111,7 @@ namespace X.Services
         {            
             var ctx = context as HttpContext;
             var res = new StringBuilder();
-            ctx.Response.ContentType = "text/html; charset=utf-8";
-            
+            ctx.Response.ContentType = "text/html; charset=utf-8";            
             res.Append("<html><head><link href='https://www.w3schools.com/w3css/4/w3.css' rel='stylesheet'></head><body><div class='w3-white w3-padding notranslate'><table border='0'>");
             res.Append("<tr><th>Command</th><th>Description</td></tr>");
             foreach (var c in Commands)
@@ -119,7 +120,7 @@ namespace X.Services
             }
             res.Append("</table></div></body></html>");
             ctx.Response.WriteAsync(res.ToString());
-        }            
+        }
 
         Assembly LoadAssembly(string assemblyPath)
         {
