@@ -8,7 +8,6 @@ namespace X.Services
 {
     public interface ICommandService : IService
     {
-        void InsertTestData();
         bool InvokeCommand(string path,object ctx);
     }
 }

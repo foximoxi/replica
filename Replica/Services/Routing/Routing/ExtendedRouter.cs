@@ -14,14 +14,12 @@ namespace Replica
     {
         static X.Services.IRoutingTableService RoutingTable { get; set; }
         static X.Services.ICommandService CommandService { get; set; }
-        static X.Services.ISecurityService SecurityService { get; set; }
         static X.Services.IRequestResponseService RequestResponseService { get; set; }
 
-        public static IApplicationBuilder UseExtendedRouter(this IApplicationBuilder app, X.Services.IRoutingTableService routingTable, X.Services.ICommandService commandService, X.Services.ISecurityService securityService, X.Services.IRequestResponseService responseService)
+        public static IApplicationBuilder UseExtendedRouter(this IApplicationBuilder app, X.Services.IRoutingTableService routingTable, X.Services.ICommandService commandService, X.Services.IRequestResponseService responseService)
         {
             CommandService = commandService;
             RoutingTable = routingTable;
-            SecurityService = securityService;
             RequestResponseService = responseService;
             return Init(app);
         }

@@ -25,17 +25,20 @@ namespace Replica
             services.AddSingleton<X.Services.IFileWatchService, X.Services.FileWatchService>();
             services.AddSingleton<X.Services.IRoutingTableService, X.Services.RoutingTableService>();
             services.AddSingleton<X.Services.IRequestResponseService, X.Services.RequestResponseService>();
+            services.AddSingleton<X.Services.ICommandService, X.Services.CommandService>();
             services.AddRouting();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, X.Services.IRoutingTableService routingTableService, X.Services.ICommandService cmdService, X.Services.ISecurityService securityService, X.Services.IRequestResponseService responseService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, X.Services.IRoutingTableService routingTableService, X.Services.ICommandService cmdService, X.Services.IRequestResponseService responseService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseExtendedRouter(routingTableService, cmdService, securityService, responseService);
+            string path=System.IO.Directory.GetCurrentDirectory();
+
+            app.UseExtendedRouter(routingTableService, cmdService, responseService);
         }
     }
 }
