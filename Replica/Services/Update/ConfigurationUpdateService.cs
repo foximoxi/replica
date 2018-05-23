@@ -36,7 +36,6 @@ namespace R.Services
         {
             try
             {
-                pkg.RecognizeFiles();
                 ApplyConfiguration(pkg);
             }
             catch (Exception ex)

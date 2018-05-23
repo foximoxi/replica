@@ -82,7 +82,7 @@ namespace R.Services.Update
             var ext = System.IO.Path.GetExtension(fileName);
             if (ext == ".json")
             {
-                RecognizedFiles[fileName] = R.Helpers.JsonHelper.ValidateJson(fileName) ? FileType.JsonPlainFile : FileType.InvalidJson;
+                RecognizedFiles[fileName] = R.Helpers.JsonHelper.ValidateJson(System.IO.File.ReadAllText(fileName, System.Text.Encoding.UTF8)) ? FileType.JsonPlainFile : FileType.InvalidJson;
             }
         }
 
