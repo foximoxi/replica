@@ -22,11 +22,12 @@ namespace Replica
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<X.Services.IStatusServices, X.Services.StatusService>();
             services.AddSingleton<X.Services.IFileWatchService, X.Services.FileWatchService>();
             services.AddSingleton<X.Services.IRoutingTableService, X.Services.RoutingTableService>();
             services.AddSingleton<X.Services.IRequestResponseService, X.Services.RequestResponseService>();
-            services.AddSingleton<X.Services.ICommandService, X.Services.CommandService>();
             services.AddSingleton<X.Services.IConfigurationUpdateService, X.Services.ConfigurationUpdateService>();
+            services.AddSingleton<X.Services.ICommandService, X.Services.CommandService>();
             services.AddRouting();
         }
 
@@ -38,7 +39,6 @@ namespace Replica
             }
 
             string path=System.IO.Directory.GetCurrentDirectory();
-
             app.UseExtendedRouter(routingTableService, cmdService, responseService);
         }
     }

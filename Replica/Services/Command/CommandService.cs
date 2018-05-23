@@ -23,6 +23,17 @@ namespace X.Services
             Init();
         }
 
+        List<Command> Commands { get; set; }
+        void Init()
+        {
+            Commands = new List<Command>();
+            Commands.Add(new Command() { Name = "show.views", Func = ShowLoadedViews });
+            Commands.Add(new Command() { Name = "show.endpoints", Func = ShowEndPoints });
+            Commands.Add(new Command() { Name = "show.apprests", Func = AppRests });
+            Commands.Add(new Command() { Name = "config.restart", Func = ConfigRestart });
+            Commands.Add(new Command() { Name = "show.endpoints.csharp", RespondFunc = ShowEndPointsInCSharp });
+        }
+
         public object ShowLoadedViews()
         {
             var res = new List<object>();
@@ -121,16 +132,7 @@ namespace X.Services
             FileWatchService.NotifyConfigurationChange();return null;
         }
 
-        List<Command> Commands { get; set; }
-        void Init()
-        {
-            Commands = new List<Command>();
-            Commands.Add(new Command() { Name = "show.views", Func= ShowLoadedViews  });
-            Commands.Add(new Command() { Name = "show.endpoints", Func= ShowEndPoints });
-            Commands.Add(new Command() { Name = "show.apprests", Func = AppRests });
-            Commands.Add(new Command() { Name = "config.restart", Func = ConfigRestart });
-            Commands.Add(new Command() { Name = "show.endpoints.csharp", RespondFunc = ShowEndPointsInCSharp });
-        }
+        
         public bool InvokeCommand(string path, object ctx)
         {
             var p = path.Replace("_cmd", "").Replace("/","").ToLower();

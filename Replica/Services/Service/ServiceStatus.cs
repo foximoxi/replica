@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace X.Services
 {
-    public interface IStatusServices : IService
+    public enum ServiceStatus
     {
-        Dictionary<string, ServiceStatus> Status { get; set; }
+        Initializing,
+        Stopped,
+        Running,
+        Failed,
+        Restarting
     }
 }
