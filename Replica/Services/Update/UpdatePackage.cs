@@ -11,21 +11,6 @@ namespace R.Services.Update
     {
         public ICollection<string> UnrecognizedFiles { get; set; }
         public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
-        public List<string> CompiledFiles { get; set; } = new List<string>();
-
-        public List<R.Config.DataSource> DataSources { get; private set; } = new List<DataSource>();
-        public List<Structure> Structures { get; private set; } = new List<Structure>();
-        public List<ViewDefinition> Views { get; private set; } = new List<ViewDefinition>();
-
-        public List<ViewDefinition> TypedViews { get; private set; }
-        public List<InsertDefinition> TypedPosts { get; private set; }
-        public List<UpdateDefinition> TypedPuts { get; private set; }
-        public List<DeleteDefinition> TypedDeletes { get; private set; }
-        public List<CustomDefinition> CustomComponents { get; private set; }
-        public List<MethodDefinition> CustomMethodComponents { get; private set; }
-        public List<Type> ObjectServices { get; private set; }
-        public List<Type> GlobalFilters { get; private set; }
-        public List<Type> Plugins { get; private set; }
 
         private StructureValidator structureValidator = new StructureValidator();
 
@@ -86,31 +71,11 @@ namespace R.Services.Update
             }
         }
 
-        void InitLists()
-        {
-            TypedViews = new List<ViewDefinition>();
-            TypedPosts = new List<InsertDefinition>();
-            TypedPuts = new List<UpdateDefinition>();
-            TypedDeletes = new List<DeleteDefinition>();
-            ObjectServices = new List<Type>();
-            GlobalFilters = new List<Type>();
-            CustomComponents = new List<CustomDefinition>();
-            Plugins = new List<Type>();
-            CustomMethodComponents = new List<MethodDefinition>();
-        }
-
         void AddFile(string file)
         {
             if (IgnoreFile(file) == false)
             {
                 var extractor = new R.Helpers.DefinitionExtractor(file);
-                Structures.AddRange(extractor.ExtractStructures());
-                TypedViews.AddRange(extractor.ExtractTypedViews());
-                TypedPosts.AddRange(extractor.ExtractTypedPosts());
-                TypedPuts.AddRange(extractor.ExtractTypedPuts());
-                TypedDeletes.AddRange(extractor.ExtractTypedDeletes());
-                CustomComponents.AddRange(extractor.ExtractCustomComponents());
-                CustomMethodComponents.AddRange(extractor.ExtractMethodsFromCustomComponents());
             }
         }
 
