@@ -5,7 +5,7 @@ using System.Collections.Generic;
 //using Newtonsoft.Json;
 //using Newtonsoft.Json.Converters;
 
-namespace X.Config
+namespace R.Config
 {
     public class Field
     {

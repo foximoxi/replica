@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using X.Config;
-using X.Services.Plugins;
+using R.Config;
+using R.Services.Plugins;
 
-namespace X.Services
+namespace R.Services
 {
     public interface IModelManager
     {
-        X.Services.Plugins.DbConnector DataSource { get; set; }
+        R.Services.Plugins.DbConnector DataSource { get; set; }
         IList<IStructure> Structures { get;}
         IEnumerable<string> GetNames();
         IStructure Get(string name);

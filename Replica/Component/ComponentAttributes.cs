@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace X.Public
+namespace R.Public
 {
     //defines property field as subobject to fill during query
     public class SubViewAttribute : Attribute

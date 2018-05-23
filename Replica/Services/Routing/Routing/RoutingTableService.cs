@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using X.Config;
+using R.Config;
 using Microsoft.AspNetCore.Builder;
-using X.Public;
+using R.Public;
 using Microsoft.Extensions.Logging;
 
-namespace X.Services
+namespace R.Services
 {
     public class RoutingTableService : IRoutingTableService
     {
@@ -78,7 +78,7 @@ namespace X.Services
             }
         }
 
-        public KeyValuePair<X.Config.IEndPoint, Dictionary<string, string>> Route(string uri, HttpMethod httpMethod)
+        public KeyValuePair<R.Config.IEndPoint, Dictionary<string, string>> Route(string uri, HttpMethod httpMethod)
         {
             if (NonParametrized.ContainsKey(uri))
             {
@@ -89,7 +89,7 @@ namespace X.Services
             {
                 string[] path = uri.Split(new char[] { '/' });
                 var inputParameters = new Dictionary<string, string>();
-                return new KeyValuePair<X.Config.IEndPoint, Dictionary<string, string>>(GetParametrized(path, 0, Parametrized, inputParameters, httpMethod), inputParameters);
+                return new KeyValuePair<R.Config.IEndPoint, Dictionary<string, string>>(GetParametrized(path, 0, Parametrized, inputParameters, httpMethod), inputParameters);
             }
         }
 

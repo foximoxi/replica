@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public class Validator:IValidator
     {
@@ -15,7 +15,7 @@ namespace X.Config
             RegisterValidationMessage(new ValidationInfo() { Message = message, Name = propertyName });
         }
 
-        public void RegisterValidationMessage(X.Public.ValidationInfo info)
+        public void RegisterValidationMessage(R.Public.ValidationInfo info)
         {
             validations.Add(info);
         }

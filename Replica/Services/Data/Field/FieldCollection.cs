@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 
-namespace X.Config
+namespace R.Config
 {
     public class FieldCollection : ICollection<Field>
     {

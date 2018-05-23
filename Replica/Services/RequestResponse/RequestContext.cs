@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     /// <summary>
     /// Interfejs profilu uzytkownika zwracanego z bazy
     /// </summary>
     public class RequestContext:IRequestContext
     {
-        public X.Security.UserProfile User { get; set; }
+        public R.Security.UserProfile User { get; set; }
         public object HttpContext { get; set; }
         public HttpMethod HttpMethod { get; set; }
         public Dictionary<string,string> InputParameters { get; set; }
@@ -41,7 +41,7 @@ namespace X.Config
             var ctx = this.HttpContext as HttpContext;
             if (ResponseType == ResponseType.JSON)
             {
-                var helper = new X.Helpers.JsonHelper();
+                var helper = new R.Helpers.JsonHelper();
                 await ctx.Response.WriteAsync(helper.SerializeObject(ctx.Response));
             }
         }

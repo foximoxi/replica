@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using X.Config;
+using R.Config;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace X.Services
+namespace R.Services
 {
     public class ReverseProxyService:IReverseProxyService
     {

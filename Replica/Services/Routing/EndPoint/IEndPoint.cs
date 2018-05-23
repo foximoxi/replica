@@ -1,7 +1,7 @@
 ﻿using System;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IEndPoint
     {

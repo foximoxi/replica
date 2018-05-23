@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public class RestEndPoint : EndPoint, IRestEndPoint
     {

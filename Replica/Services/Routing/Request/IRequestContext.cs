@@ -3,10 +3,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using X.Public;
+using R.Public;
 
 
-namespace X.Config
+namespace R.Config
 {
     /// <summary>
     /// Interfejs requestu, ktory krazy miedzy warstwami
@@ -18,7 +18,7 @@ namespace X.Config
         HttpMethod HttpMethod { get; set; }
         int ThreadId { get; set; }
         Dictionary<string, string> InputParameters { get; set; }
-        X.Security.UserProfile User { get; set; }
+        R.Security.UserProfile User { get; set; }
         object Response { get; set; }
         ResponseType ResponseType { get; set; }
         void Respond();

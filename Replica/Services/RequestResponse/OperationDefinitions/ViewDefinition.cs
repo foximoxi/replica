@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace X.Config
+namespace R.Config
 {
     public class ViewDefinition: SubViewDefinition,IOperationDefinition
     {
@@ -11,7 +11,7 @@ namespace X.Config
         {
             get { return this;  }
         }
-        public X.Public.Op Operation { get; set; }
+        public R.Public.Op Operation { get; set; }
     }
 
     public class SubViewDefinition

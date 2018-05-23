@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 
-namespace X.Public
+namespace R.Public
 {
     public class ForeignKeyAttribute : Attribute
     {

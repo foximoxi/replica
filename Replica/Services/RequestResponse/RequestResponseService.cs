@@ -9,10 +9,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using X.Config;
-using X.Public;
+using R.Config;
+using R.Public;
 
-namespace X.Services
+namespace R.Services
 {
     public class SingleCrudTest
     {
@@ -68,12 +68,12 @@ namespace X.Services
             return rx;
         }
 
-        public async Task Respond(X.Config.IRequestContext request)
+        public async Task Respond(R.Config.IRequestContext request)
         {
             var context = request.HttpContext as HttpContext;
             if (request.ResponseType == ResponseType.JSON)
                 context.Response.ContentType = "application/json";
-            var json = new X.Helpers.JsonHelper();
+            var json = new R.Helpers.JsonHelper();
 
             var settings = InitSerialization();
 

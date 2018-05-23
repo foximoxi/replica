@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using X.Config;
+using R.Config;
 
-namespace X.Services.Plugins.Db
+namespace R.Services.Plugins.Db
 {
     public interface IEngineServices
     {

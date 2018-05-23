@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace X.Config
+namespace R.Config
 {
     public class EndPointUri
     {

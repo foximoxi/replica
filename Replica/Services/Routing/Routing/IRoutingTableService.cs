@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using X.Public;
-using X.Config;
+using R.Public;
+using R.Config;
 
-namespace X.Services
+namespace R.Services
 {
     public interface IRoutingTableService : IService
     {
-        void Register(X.Config.IRestEndPoint endPoint);
-        KeyValuePair<X.Config.IEndPoint, Dictionary<string, string>> Route(string uri, HttpMethod restMethod);
+        void Register(R.Config.IRestEndPoint endPoint);
+        KeyValuePair<R.Config.IEndPoint, Dictionary<string, string>> Route(string uri, HttpMethod restMethod);
         void CompleteUpdate();
         void ReleaseConfiguration();
         void ReplaceEndPoints(ICollection<IEndPoint> endPoint);

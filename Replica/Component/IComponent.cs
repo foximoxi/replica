@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IComponent: IComponentBase
     {
         Task Invoke(IRequestContext context);
-        X.Config.EndPointUri CustomUri { get; }
+        R.Config.EndPointUri CustomUri { get; }
         void Start();
     }
 }

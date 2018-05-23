@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Hosting;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using X.Services;
+using R.Services;
 
-namespace X.Services
+namespace R.Services
 {
     public class FileWatchService : IFileWatchService
     {
         System.IO.FileSystemWatcher watcher;
         public string WatchPath { get; private set; }
         IStatusServices statusService;
-        X.Services.IConfigurationUpdateService updateService;
+        R.Services.IConfigurationUpdateService updateService;
         public ILogger Log { get; private set; }
 
-        public FileWatchService(X.Services.IConfigurationUpdateService updateSvc, IStatusServices statusSvc)
+        public FileWatchService(R.Services.IConfigurationUpdateService updateSvc, IStatusServices statusSvc)
         {
             updateService = updateSvc;
             statusService = statusSvc;

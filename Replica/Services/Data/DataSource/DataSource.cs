@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace X.Config
+namespace R.Config
 {
     public class DataSource
     {

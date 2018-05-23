@@ -1,14 +1,14 @@
 ﻿using System;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public class EndPoint:IEndPoint
     {
         public IComponent Component { get; set; }
         public bool IsParametrized { get; set; }
         public HttpMethod Method { get; set; }
-        public X.Config.Filters.Security.IResourceAccessFilter Security { get; set; }
+        public R.Config.Filters.Security.IResourceAccessFilter Security { get; set; }
         string uri;
         public string Uri
         {

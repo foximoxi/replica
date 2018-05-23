@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 
-namespace X.Public
+namespace R.Public
 {
     public class TestRowsAttribute : Attribute
     {
@@ -21,9 +21,9 @@ namespace X.Public
     public class DescriptionAttribute : Attribute
     {
         string _description;
-        X.Language _language;
+        R.Language _language;
         public string DescriptionText { get { return _description; } }
-        public DescriptionAttribute(string description,X.Language language= Language.English)
+        public DescriptionAttribute(string description,R.Language language= Language.English)
         {
             _language = language;
             _description = description;

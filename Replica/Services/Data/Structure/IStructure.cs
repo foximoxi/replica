@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IStructure
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using X.Config;
+using R.Config;
 
-namespace X.Config.Update
+namespace R.Config.Update
 {
     public interface IUpdatePackage
     {

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using X.Config;
-using X.Config.Update;
+using R.Config;
+using R.Config.Update;
 using Newtonsoft.Json.Linq;
 
-namespace X.Services.Update
+namespace R.Services.Update
 {
-    public class UpdatePackage : X.Config.Update.IUpdatePackage
+    public class UpdatePackage : R.Config.Update.IUpdatePackage
     {
         public ICollection<string> UnrecognizedFiles { get; set; }
         public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
         public List<string> CompiledFiles { get; set; } = new List<string>();
 
-        public List<X.Config.DataSource> DataSources { get; private set; } = new List<DataSource>();
+        public List<R.Config.DataSource> DataSources { get; private set; } = new List<DataSource>();
         public List<Structure> Structures { get; private set; } = new List<Structure>();
         public List<ViewDefinition> Views { get; private set; } = new List<ViewDefinition>();
 
@@ -29,9 +29,8 @@ namespace X.Services.Update
 
         private StructureValidator structureValidator = new StructureValidator();
 
-        X.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();
-
-
+        R.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();
+        
         public UpdatePackage(ICollection<string> allFiles)
         {
             this.UnrecognizedFiles = allFiles;
@@ -40,7 +39,6 @@ namespace X.Services.Update
 
         public bool DeserializeAll()
         {
-            DeassemblyFiles();
             return Validate();
         }
 
@@ -49,7 +47,7 @@ namespace X.Services.Update
             return structureValidator.ValidationResult.IsValid;
         }
 
-        public ICollection<X.Public.ValidationInfo> PackageValidationOutput
+        public ICollection<R.Public.ValidationInfo> PackageValidationOutput
         {
             get
             {
@@ -84,7 +82,7 @@ namespace X.Services.Update
             var ext = System.IO.Path.GetExtension(fileName);
             if (ext == ".json")
             {
-                RecognizedFiles[fileName] = X.Helpers.JsonHelper.ValidateJson(fileName) ? FileType.JsonPlainFile : FileType.InvalidJson;
+                RecognizedFiles[fileName] = R.Helpers.JsonHelper.ValidateJson(fileName) ? FileType.JsonPlainFile : FileType.InvalidJson;
             }
         }
 
@@ -101,21 +99,11 @@ namespace X.Services.Update
             CustomMethodComponents = new List<MethodDefinition>();
         }
 
-        void DeassemblyFiles()
-        {
-            if (this.CompiledFiles != null)
-            {
-                InitLists();
-                foreach (var file in CompiledFiles)
-                    AddFile(file);
-            }
-        }
-
         void AddFile(string file)
         {
             if (IgnoreFile(file) == false)
             {
-                var extractor = new X.Helpers.DefinitionExtractor(file);
+                var extractor = new R.Helpers.DefinitionExtractor(file);
                 Structures.AddRange(extractor.ExtractStructures());
                 TypedViews.AddRange(extractor.ExtractTypedViews());
                 TypedPosts.AddRange(extractor.ExtractTypedPosts());

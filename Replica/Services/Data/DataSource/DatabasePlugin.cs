@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace X.Services.Plugins
+namespace R.Services.Plugins
 {
     public interface DbConnector
     {
         void Close(bool dispose = true);
         void CreatePool(string connectionString);
-        X.Services.Plugins.Db.IEngineServices Services { get; }
-        X.Config.IConnectionPool Pool {get;}
+        R.Services.Plugins.Db.IEngineServices Services { get; }
+        R.Config.IConnectionPool Pool {get;}
     }
 }

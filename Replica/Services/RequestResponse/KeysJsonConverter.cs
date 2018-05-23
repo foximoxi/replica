@@ -9,10 +9,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using X.Config;
-using X.Public;
+using R.Config;
+using R.Public;
 
-namespace X.Services.Serialization
+namespace R.Services.Serialization
 {
     public class KeysJsonConverter : JsonConverter
     {

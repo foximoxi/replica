@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
-using X.Config;
-using X.Public;
+using R.Config;
+using R.Public;
 
 namespace Replica
 {
     public static class ExtendedRouter
     {
-        static X.Services.IRoutingTableService RoutingTable { get; set; }
-        static X.Services.ICommandService CommandService { get; set; }
-        static X.Services.IRequestResponseService RequestResponseService { get; set; }
+        static R.Services.IRoutingTableService RoutingTable { get; set; }
+        static R.Services.ICommandService CommandService { get; set; }
+        static R.Services.IRequestResponseService RequestResponseService { get; set; }
 
-        public static IApplicationBuilder UseExtendedRouter(this IApplicationBuilder app, X.Services.IRoutingTableService routingTable, X.Services.ICommandService commandService, X.Services.IRequestResponseService responseService)
+        public static IApplicationBuilder UseExtendedRouter(this IApplicationBuilder app, R.Services.IRoutingTableService routingTable, R.Services.ICommandService commandService, R.Services.IRequestResponseService responseService)
         {
             CommandService = commandService;
             RoutingTable = routingTable;

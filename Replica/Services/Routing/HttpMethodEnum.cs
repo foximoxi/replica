@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace X.Public
+namespace R.Public
 {
     public enum HttpMethod
     {

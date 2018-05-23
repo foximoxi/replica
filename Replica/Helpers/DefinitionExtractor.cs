@@ -7,11 +7,11 @@ using System.Runtime.Loader;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyModel;
 using Newtonsoft.Json;
-using X.Public;
-using X.Config;
+using R.Public;
+using R.Config;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace X.Helpers
+namespace R.Helpers
 {
     public class DefinitionExtractor : ReflectionHelper
     {
@@ -28,11 +28,11 @@ namespace X.Helpers
             ExtractedTypes = ExtractAllTypes(Assembly);
         }
 
-        public X.Config.Structure[] ExtractStructures()
+        public R.Config.Structure[] ExtractStructures()
         {
-            var ret = new List<X.Config.Structure>();
+            var ret = new List<R.Config.Structure>();
             var tables = ExtractedTypes.Where(x => x.Value.GetTypeInfo().GetCustomAttribute<TableAttribute>(false) != null);
-            var converter = new X.Helpers.StructureConverter();
+            var converter = new R.Helpers.StructureConverter();
 
             foreach (var t in tables.Where(x => x.Value.GetTypeInfo().GetCustomAttribute<CreateIfNotExistAttribute>(false) != null))
             {
@@ -42,9 +42,9 @@ namespace X.Helpers
             return ret.ToArray();
         }
 
-        public X.Config.ViewDefinition[] ExtractTypedViews()
+        public R.Config.ViewDefinition[] ExtractTypedViews()
         {
-            var ret = new List<X.Config.ViewDefinition>();
+            var ret = new List<R.Config.ViewDefinition>();
             foreach (var t in ExtractedTypes.Where(x => x.Value.GetTypeInfo().GetCustomAttribute<RestGetAttribute>(false) != null))
                 ret.Add(CreateViewDefinition(t,Op.GET));
             foreach (var t in ExtractedTypes.Where(x => x.Value.GetTypeInfo().GetCustomAttribute<RestLocatorAttribute>(false) != null))
@@ -53,20 +53,20 @@ namespace X.Helpers
                 ret.Add(CreateViewDefinition(t, Op.GET));
             foreach (var t in FromRestPack(ExtractedTypes, Op.GET_ONE))
                 ret.Add(CreateViewDefinition(t, Op.GET_ONE));
-            return ret.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x.TypeForQuery)==false).ToArray();            
+            return ret.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x.TypeForQuery)==false).ToArray();            
         }        
 
-        public X.Config.InsertDefinition[] ExtractTypedPosts()
+        public R.Config.InsertDefinition[] ExtractTypedPosts()
         {
             var ret = new List<InsertDefinition>();
             foreach (var t in ExtractedTypes.Where(x => x.Value.GetTypeInfo().GetCustomAttribute<RestPostAttribute>(false) != null).ToArray())
                 ret.Add(CreateInsertDefinition(t, Op.POST));
             foreach (var t in FromRestPack(ExtractedTypes, Op.POST))
                 ret.Add(CreateInsertDefinition(t,Op.POST));
-            return ret.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
+            return ret.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
         }
 
-        public X.Config.UpdateDefinition[] ExtractTypedPuts()
+        public R.Config.UpdateDefinition[] ExtractTypedPuts()
         {
             var ret = new List<UpdateDefinition>();
 
@@ -74,10 +74,10 @@ namespace X.Helpers
                 ret.Add(CreateUpdateDefinition(t,Op.PUT));
             foreach (var t in FromRestPack(ExtractedTypes, Op.PUT))
                 ret.Add(CreateUpdateDefinition(t, Op.PUT));
-            return ret.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
+            return ret.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
         }
 
-        public X.Config.DeleteDefinition[] ExtractTypedDeletes()
+        public R.Config.DeleteDefinition[] ExtractTypedDeletes()
         {
             var ret = new List<DeleteDefinition>();
 
@@ -85,12 +85,12 @@ namespace X.Helpers
                 ret.Add(CreateDeleteDefinition(t,Op.DELETE));
             foreach (var t in FromRestPack(ExtractedTypes, Op.DELETE))
                 ret.Add(CreateDeleteDefinition(t, Op.DELETE));
-            return ret.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
+            return ret.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x.Type) == false).ToArray();
         }
 
-        public X.Config.CustomDefinition[] ExtractCustomComponents()
+        public R.Config.CustomDefinition[] ExtractCustomComponents()
         {
-            var components = ExtractedTypes.Values.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x)).ToList();
+            var components = ExtractedTypes.Values.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x)).ToList();
             var ret = new List<CustomDefinition>();
             foreach (var t in components.Where(x => x.GetTypeInfo().GetCustomAttribute<RestGetAttribute>(false) != null).ToArray())
                 ret.Add(CreateCustomDefinition(t, Op.GET,typeof(RestGetAttribute)));
@@ -112,7 +112,7 @@ namespace X.Helpers
 
         public List<MethodDefinition> ExtractMethodsFromCustomComponents()
         {
-            var components = ExtractedTypes.Values.Where(x => typeof(X.Config.IComponent).IsAssignableFrom(x)).ToList();
+            var components = ExtractedTypes.Values.Where(x => typeof(R.Config.IComponent).IsAssignableFrom(x)).ToList();
             var ret = new List<MethodDefinition>();
             foreach (var component in components)
             {
@@ -163,7 +163,7 @@ namespace X.Helpers
             if (attr != null)
             {
                 if (attr.ReturnViewType == ResourceViewType.AsLocationUri)
-                    if (t.GetTypeInfo().GetCustomAttribute<X.Public.RestLocatorAttribute>(false) == null)
+                    if (t.GetTypeInfo().GetCustomAttribute<R.Public.RestLocatorAttribute>(false) == null)
                         throw new Exception("Missing RestLocator in " + attrType.Name + " attribute of type:" + t.Name);
                 return attr.ReturnViewType;
             }
@@ -174,12 +174,12 @@ namespace X.Helpers
             }            
         }
 
-        IEnumerable<KeyValuePair<string, Type>> FromRestPack(Dictionary<string, Type> types, X.Public.Op flag)
+        IEnumerable<KeyValuePair<string, Type>> FromRestPack(Dictionary<string, Type> types, R.Public.Op flag)
         {
             return ExtractedTypes.Where(x => ((x.Value.GetTypeInfo().GetCustomAttribute<RestPackAttribute>(false) != null) && ((x.Value.GetTypeInfo().GetCustomAttribute<RestPackAttribute>(false).Operations & flag) == flag)));
         }
 
-        IEnumerable<Type> FromRestPack2(IEnumerable<Type> types, X.Public.Op flag)
+        IEnumerable<Type> FromRestPack2(IEnumerable<Type> types, R.Public.Op flag)
         {
             return types.Where(x => ((x.GetTypeInfo().GetCustomAttribute<RestPackAttribute>(false) != null) && ((x.GetTypeInfo().GetCustomAttribute<RestPackAttribute>(false).Operations & flag) == flag)));
         }

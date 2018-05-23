@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace X.Config
+namespace R.Config
 {
     /// <summary>
     /// Interfejs profilu uzytkownika zwracanego z bazy

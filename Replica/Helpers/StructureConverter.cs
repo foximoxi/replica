@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace X.Helpers
+namespace R.Helpers
 {
     public class StructureConverter
     {
@@ -37,18 +37,18 @@ namespace X.Helpers
             return name;
         }
 
-        public X.Config.Structure ConvertDaoType(Type t)
+        public R.Config.Structure ConvertDaoType(Type t)
         {
             var name = ExtractStructureName(t);
-            var structure = new X.Config.Structure()
+            var structure = new R.Config.Structure()
             {
                 Name = name,
                 Fields = new Config.FieldCollection()
             };
 #if NETCOREAPP2_0 || NETCOREAPP2_1
-            if (t.GetTypeInfo().GetCustomAttribute<X.Public.TestRowsAttribute>() != null)
+            if (t.GetTypeInfo().GetCustomAttribute<R.Public.TestRowsAttribute>() != null)
             {
-                var attr = t.GetTypeInfo().GetCustomAttribute<X.Public.TestRowsAttribute>();
+                var attr = t.GetTypeInfo().GetCustomAttribute<R.Public.TestRowsAttribute>();
                 structure.TestRows = attr.NumberOfRows;
             }
 #endif
@@ -68,10 +68,10 @@ namespace X.Helpers
 
             foreach (var f in props)
             {
-                var structureField = new X.Config.Field()
+                var structureField = new R.Config.Field()
                 {
                     Name = f.Name,
-                    Type = X.Config.Field.ConvertFromType(f.PropertyType),
+                    Type = R.Config.Field.ConvertFromType(f.PropertyType),
                     Required = (f.GetCustomAttribute<System.ComponentModel.DataAnnotations.RequiredAttribute>() != null)
                 };
                 ExtractAttributes(f, structureField, structure);
@@ -80,26 +80,26 @@ namespace X.Helpers
             return structure;
         }
 
-        protected void ExtractAttributes(PropertyInfo f, X.Config.Field structureField, X.Config.Structure structure)
+        protected void ExtractAttributes(PropertyInfo f, R.Config.Field structureField, R.Config.Structure structure)
         {
             if (f.GetCustomAttribute<System.ComponentModel.DataAnnotations.KeyAttribute>() != null)
             {
                 structureField.Marker = Config.FieldMarker.PrimaryKey;
                 structure.PK = structureField.Name;
             }
-            if (f.GetCustomAttribute<X.Public.CreatedAttribute>() != null)
+            if (f.GetCustomAttribute<R.Public.CreatedAttribute>() != null)
                 structureField.Marker = Config.FieldMarker.Created;
-            if (f.GetCustomAttribute<X.Public.ModifiedAttribute>() != null)
+            if (f.GetCustomAttribute<R.Public.ModifiedAttribute>() != null)
                 structureField.Marker = Config.FieldMarker.Modified;
 
             structureField.SaveInDb = (f.GetCustomAttribute<System.ComponentModel.DataAnnotations.Schema.NotMappedAttribute>() == null);
 
-            var fkAttr = f.GetCustomAttribute<X.Public.ForeignKeyAttribute>();
+            var fkAttr = f.GetCustomAttribute<R.Public.ForeignKeyAttribute>();
             if (fkAttr != null)
             {
                 structureField.ForeignKeySettings = new Config.ForeignKeySettings() { ReferencedStructure = fkAttr.ReferencedType, CreateConstraint = fkAttr.CreateConstraint };
             }
-            var testRowAttr = f.GetCustomAttribute<X.Public.TestRowAttribute>();
+            var testRowAttr = f.GetCustomAttribute<R.Public.TestRowAttribute>();
             if (testRowAttr != null)
             {
                 var rows = new List<Config.FieldTestRow>();
@@ -117,7 +117,7 @@ namespace X.Helpers
             return name;
         }
 
-        protected void DetectForeignKeys(List<X.Config.Structure> structures)
+        protected void DetectForeignKeys(List<R.Config.Structure> structures)
         {
             foreach (var structure in structures)
             {

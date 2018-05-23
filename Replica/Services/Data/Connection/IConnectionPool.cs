@@ -1,9 +1,9 @@
 ﻿using System;
-using X.Services;
+using R.Services;
 using System.Threading.Tasks;
 using System.Data;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IConnectionPool
     {

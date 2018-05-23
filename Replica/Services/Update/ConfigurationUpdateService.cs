@@ -9,9 +9,9 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using X.Services;
+using R.Services;
 
-namespace X.Services
+namespace R.Services
 {
     public class ConfigurationUpdateService : IConfigurationUpdateService
     {
@@ -32,7 +32,7 @@ namespace X.Services
         object lockObj = new object();
 
         #region publicMethods
-        public void UpdateConfiguration(X.Config.Update.IUpdatePackage pkg)
+        public void UpdateConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace X.Services
             System.GC.Collect();
         }
         #endregion
-        void ApplyConfiguration(X.Config.Update.IUpdatePackage pkg)
+        void ApplyConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
             lock (lockObj)
             {

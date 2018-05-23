@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using X.Services;
+using R.Services;
 using Microsoft.Extensions.Logging;
 
-namespace X.Services
+namespace R.Services
 {   
     public class StatusService:IStatusServices
     {

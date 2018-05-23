@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using X.Public;
+using R.Public;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IRestEndPoint:IEndPoint
     {

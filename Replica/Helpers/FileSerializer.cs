@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 
-namespace X.Helpers
+namespace R.Helpers
 {
     public class FileSerializer
     {

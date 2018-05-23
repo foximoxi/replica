@@ -9,7 +9,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 
-namespace X.Services
+namespace R.Services
 {
     public class CommandService : ICommandService
     {
@@ -74,14 +74,14 @@ namespace X.Services
             return res;
         }
 
-        string GetAssemblyName(X.Config.IOperationDefinition definition)
+        string GetAssemblyName(R.Config.IOperationDefinition definition)
         {
             var assemblyName = definition.ExposedType?.AssemblyQualifiedName;
             if (assemblyName == null)
             {
-                if (definition is X.Config.CustomDefinition)
+                if (definition is R.Config.CustomDefinition)
                 {
-                    var component = (X.Config.CustomDefinition)definition;
+                    var component = (R.Config.CustomDefinition)definition;
                     assemblyName = component.ComponentType.AssemblyQualifiedName;
                 }
             }
@@ -92,7 +92,7 @@ namespace X.Services
         {
             while (enu.MoveNext())
             {
-                var c=enu.Current as X.Config.IOperationDefinition;
+                var c=enu.Current as R.Config.IOperationDefinition;
                 var assemblyName = GetAssemblyName(c);
                 if (res.ContainsKey(assemblyName) == false)
                     res[assemblyName] = new List<ExposedRest>();
@@ -103,7 +103,7 @@ namespace X.Services
         void Respond(object context, object obj)
         {
             var ctx = context as HttpContext;
-            X.Helpers.JsonHelper js = new Helpers.JsonHelper();
+            R.Helpers.JsonHelper js = new Helpers.JsonHelper();
             ctx.Response.WriteAsync(js.SerializeObject(obj));
         }
 
@@ -170,6 +170,6 @@ namespace X.Services
     {
         public string Uri { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public X.Public.Op Op { get; set; }
+        public R.Public.Op Op { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System;
-using X.Services;
+using R.Services;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IDataConnection
     {
-        X.Services.Plugins.DbConnector DataSource { get; set; }
-        X.Config.DataSource Config { get; set; }
-        X.Config.DataSource NewConfig { get; set; }
+        R.Services.Plugins.DbConnector DataSource { get; set; }
+        R.Config.DataSource Config { get; set; }
+        R.Config.DataSource NewConfig { get; set; }
         bool IsDefault { get; set; }
         void Initialize();
 
-        X.Services.IModelManager ModelManager { get; set; }
-        X.Services.ITestDataGenerator TestDataGenerator { get; set; }
+        R.Services.IModelManager ModelManager { get; set; }
+        R.Services.ITestDataGenerator TestDataGenerator { get; set; }
     }
 }

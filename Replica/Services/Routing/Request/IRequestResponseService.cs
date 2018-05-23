@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using X.Public;
-using X.Config;
+using R.Public;
+using R.Config;
 using System.Threading.Tasks;
 
-namespace X.Services
+namespace R.Services
 {
     public interface IRequestResponseService : IService
     {

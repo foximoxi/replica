@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace X.Services
+namespace R.Services
 {
     //basic storage plugin for various implementations/database connectors
     public interface IFileWatchService : IService

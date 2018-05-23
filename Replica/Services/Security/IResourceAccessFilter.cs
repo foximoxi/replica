@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace X.Config.Filters.Security
+namespace R.Config.Filters.Security
 {
     public interface IResourceAccessFilter
     {

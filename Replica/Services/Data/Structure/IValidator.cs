@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace X.Config
+namespace R.Config
 {
     public interface IValidator
     {
-        X.Public.ValidationResult ValidationResult { get; }
+        R.Public.ValidationResult ValidationResult { get; }
         void RegisterValidationMessage(string message, string propertyName = null);
-        void RegisterValidationMessage(X.Public.ValidationInfo info);
+        void RegisterValidationMessage(R.Public.ValidationInfo info);
     }
 }

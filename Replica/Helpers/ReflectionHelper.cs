@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyModel;
 using System.Runtime.Loader;
 using System.IO;
 
-namespace X.Helpers
+namespace R.Helpers
 {
     //interface for extracting class properties and adnotations to create servicig form
     public class ReflectionHelper
