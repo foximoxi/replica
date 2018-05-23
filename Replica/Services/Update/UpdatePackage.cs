@@ -81,11 +81,10 @@ namespace X.Services.Update
         void DetectFile(string fileName)
         {
             var f = System.IO.File.ReadAllText(fileName, System.Text.Encoding.UTF8);
-
             var ext = System.IO.Path.GetExtension(fileName);
             if (ext == ".json")
             {
-                RecognizedFiles[fileName] = FileType.JsonPlainFile;
+                RecognizedFiles[fileName] = X.Helpers.JsonHelper.ValidateJson(fileName) ? FileType.JsonPlainFile : FileType.InvalidJson;
             }
         }
 

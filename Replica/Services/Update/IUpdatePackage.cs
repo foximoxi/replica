@@ -32,5 +32,6 @@ namespace X.Config.Update
         Unknown,
         JsonPlainFile,
         ReverseProxyConfig,
+        InvalidJson
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Loader;
 using System.Reflection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace X.Helpers
@@ -70,6 +71,19 @@ namespace X.Helpers
             lock (lockObj)
             {
                 System.IO.File.WriteAllText(path, this.SerializeObject(value));
+            }
+        }
+
+        public static bool ValidateJson(string json)
+        {
+            try
+            {
+                JToken.Parse(json);
+                return true;
+            }
+            catch (Exception)
+            {                
+                return false;
             }
         }
     }
