@@ -9,7 +9,7 @@ using R.Public;
 namespace R.Config
 {
     /// <summary>
-    /// Interfejs requestu, ktory krazy miedzy warstwami
+    /// Request interface as package
     /// </summary>
     public interface IRequestContext
     {

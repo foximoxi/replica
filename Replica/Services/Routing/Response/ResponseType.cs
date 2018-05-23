@@ -11,6 +11,9 @@ namespace R.Config
     public enum ResponseType
     {
         JSON=0,
-        XML=1
+        XML=1,
+        CSS=2,
+        HTML=3,
+        TXT=4
     }
 }
