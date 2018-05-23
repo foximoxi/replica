@@ -16,14 +16,14 @@ namespace R.Services
     {
         System.IO.FileSystemWatcher watcher;
         public string WatchPath { get; private set; }
-        IStatusServices statusService;
-        R.Services.IConfigurationUpdateService updateService;
+        IStatusServices StatusService { get; set; }
+        R.Services.IConfigurationUpdateService UpdateService { get; set; }
         public ILogger Log { get; private set; }
 
         public FileWatchService(R.Services.IConfigurationUpdateService updateSvc, IStatusServices statusSvc)
         {
-            updateService = updateSvc;
-            statusService = statusSvc;
+            UpdateService = updateSvc;
+            StatusService = statusSvc;
             statusSvc.Status[typeof(FileWatchService).Name] = ServiceStatus.Initializing;
         }
 
@@ -33,10 +33,10 @@ namespace R.Services
             watcher = new FileSystemWatcher() { Path = WatchPath, IncludeSubdirectories=true };
             watcher.Changed += (sender, e) => { NotifyChangesHandler(sender, e); };
             watcher.Deleted += (sender, e) => { NotifyChangesHandler(sender, e); };
-            watcher.EnableRaisingEvents = true;
-            statusService.Status[typeof(FileWatchService).Name] = ServiceStatus.Running;
+            watcher.EnableRaisingEvents = true;            
             NotifyAllSettingsChanges();
             NotifyConfigurationChange();
+            StatusService.Status[typeof(FileWatchService).Name] = ServiceStatus.Running;
         }
 
         DateTime lastNotifyTime = DateTime.MinValue;
@@ -56,19 +56,19 @@ namespace R.Services
 
         public void NotifyConfigurationChange()
         {
-            updateService.UpdateConfiguration(new Update.UpdatePackage(GetAllFiles()));            
+            UpdateService.UpdateConfiguration(new Update.UpdatePackage(GetAllFiles()));            
         }
 
         void NotifyAllSettingsChanges()
         {
             var settings=GetPackageFiles("*.cfg");
             if (settings!=null)
-                updateService.UpdateSettings(settings);
+                UpdateService.UpdateSettings(settings);
         }
 
         void NotifySettingsChanges()
         {
-            updateService.UpdateSettings(new string[] { lastPathChanged });
+            UpdateService.UpdateSettings(new string[] { lastPathChanged });
         }
 
         ICollection<string> GetAllFiles()

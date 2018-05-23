@@ -52,10 +52,9 @@ namespace R.Services
             this.RoutingTableService.ReleaseConfiguration();
             System.GC.Collect();
         }
+        #endregion
 
         object lockObj = new object();
-
-        #endregion
         void ApplyConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
             lock (lockObj)
