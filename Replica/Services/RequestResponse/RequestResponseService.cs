@@ -22,7 +22,7 @@ namespace X.Services
     }
 
     /// <summary>
-    /// przygotowanie requestu i odpowiedzi do serwera
+    /// request processing and response preparation
     /// </summary>
     public class RequestResponseService : IRequestResponseService
     {
@@ -54,7 +54,6 @@ namespace X.Services
                 //BodyStream = new System.IO.StreamReader().ReadToEnd(System.Text.Encoding.UTF8.GetString(((HttpContext)context).Request.Body.re
             };
 
-
             {//workfloroug - nie da sie przeczytac 2x request.body, wiec zrzucane jest do stringa i wszystkie uslugi nie pracuja na Request.Body
                 var httpContext = (HttpContext)context;
                 //var initialBody = httpContext.Request.Body;
@@ -81,56 +80,6 @@ namespace X.Services
             var s = JsonConvert.SerializeObject(request.Response, settings);
             await context.Response.WriteAsync(s);
             request.Status = RequestStatus.ResponseSend;
-        }
-    }
-}
-
-namespace X.Services.Serialization
-{
-    public class KeysJsonConverter : JsonConverter
-    {
-        private readonly Type[] _types;
-        public string FlowCommand { get; set; }
-
-        public KeysJsonConverter(params Type[] types)
-        {
-            _types = types;
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            JToken t = JToken.FromObject(value, new JsonSerializer
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            });
-            if (t.Type == JTokenType.Object)
-            {
-                JObject o = (JObject)t;
-                if (this.FlowCommand != null)
-                {
-                    o.Add(new JProperty("_flowCommand", JObject.Parse(FlowCommand)));
-                    o.WriteTo(writer);
-                }
-            }
-            else
-            {
-                t.WriteTo(writer);
-            }
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException("Unnecessary because CanRead is false. The type will skip the converter.");
-        }
-
-        public override bool CanRead
-        {
-            get { return false; }
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return _types.Any(t => t == objectType);
         }
     }
 }
