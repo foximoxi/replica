@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using R.Config;
-using Microsoft.AspNetCore.Builder;
-using R.Public;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using R.Config;
+using R.Public;
 
 namespace R.Services
 {
@@ -109,7 +108,6 @@ namespace R.Services
                     {
                         var dict = routeTable[paramName.Key] as Dictionary<string, IRestEndPoint>;
                         return dict[httpMethod.ToString()];
-                        //return list.Where(x => x.Method == httpMethod).FirstOrDefault();
                     }
                 }
                 else

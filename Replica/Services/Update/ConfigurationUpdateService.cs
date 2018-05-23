@@ -25,11 +25,9 @@ namespace R.Services
             StatusService = statusSvc;
             RoutingTableService = routingTableService;
 
-            statusSvc.Status[typeof(ConfigurationUpdateService).Name] = ServiceStatus.Running;
-            Log = logger.CreateLogger(nameof(ConfigurationUpdateService));
+            statusSvc.Status[typeof(ComponentService).Name] = ServiceStatus.Running;
+            Log = logger.CreateLogger(nameof(ComponentService));
         }
-
-        object lockObj = new object();
 
         #region publicMethods
         public void UpdateConfiguration(R.Config.Update.IUpdatePackage pkg)
@@ -54,28 +52,23 @@ namespace R.Services
             this.RoutingTableService.ReleaseConfiguration();
             System.GC.Collect();
         }
+
+        object lockObj = new object();
+
         #endregion
         void ApplyConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
             lock (lockObj)
             {
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
-                if (pkg.DeserializeAll())
+                if (pkg.Unpack())
                 {
-                    /*this.DataServices.Update(pkg);
-                    this.ComponentService.Update(pkg);
-                    this.DataServices.CompleteUpdate();
-                    this.ComponentService.CompleteUpdate();*/
                     this.RoutingTableService.CompleteUpdate();
                     Log.LogInformation("Configuration update completed. No errors.");
                 }
                 else
                 {
                     string msg = "";
-                    /*foreach (var info in pkg.PackageValidationOutput)
-                    {
-                        msg += info.Name + ":" + info.Message + ",";
-                    }*/
                     Log.LogInformation($"Configuration update failed:{msg}");
                 }
             }

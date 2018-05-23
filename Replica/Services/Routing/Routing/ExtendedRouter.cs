@@ -81,7 +81,6 @@ namespace Replica
                 routeBuilder.MapDelete(BuildPath(i), DelegateHandler(HttpMethod.DELETE));
 
             RoutingTable.CompleteUpdate();
-
             app.UseRouter(routeBuilder.Build());
             return app;
         }

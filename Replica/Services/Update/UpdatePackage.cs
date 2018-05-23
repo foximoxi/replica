@@ -11,35 +11,20 @@ namespace R.Services.Update
     {
         public ICollection<string> UnrecognizedFiles { get; set; }
         public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
-
-        private StructureValidator structureValidator = new StructureValidator();
-
         R.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();
-        
+        Dictionary<string, IComponent> Components = new Dictionary<string, IComponent>();
+
         public UpdatePackage(ICollection<string> allFiles)
         {
             this.UnrecognizedFiles = allFiles;
             RecognizeFiles();
         }
 
-        public bool DeserializeAll()
+        public bool Unpack()
         {
-            return Validate();
+            return true;
         }
-
-        bool Validate()
-        {
-            return structureValidator.ValidationResult.IsValid;
-        }
-
-        public ICollection<R.Public.ValidationInfo> PackageValidationOutput
-        {
-            get
-            {
-                return structureValidator.ValidationResult.ValidationResults;
-            }
-        }
-
+        
         public void RecognizeFiles()
         {
             foreach (var f in UnrecognizedFiles)
@@ -73,23 +58,7 @@ namespace R.Services.Update
 
         void AddFile(string file)
         {
-            if (IgnoreFile(file) == false)
-            {
-                var extractor = new R.Helpers.DefinitionExtractor(file);
-            }
-        }
-
-        bool IgnoreFile(string file)
-        {
-            if (file.ToLower().Contains("iconfig.dll"))
-                return true;
-            if (file.ToLower().Contains("iux.dll"))
-                return true;
-            if (file.ToLower().Contains("bouncycastle.crypto.dll"))
-                return true;
-            if (file.ToLower().Contains("mailkit.dll"))
-                return true;
-            return false;
+            var extractor = new R.Helpers.DefinitionExtractor(file);            
         }
     }
 }

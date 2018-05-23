@@ -9,15 +9,17 @@ namespace R.Config.Update
     {
         ICollection<string> UnrecognizedFiles { get; set; }
         Dictionary<string, FileType> RecognizedFiles { get; set; }
-        bool DeserializeAll();
         void RecognizeFiles();
+        bool Unpack();
     }
 
     public enum FileType
     {
         Unknown,
+        StaticResource,
         JsonPlainFile,
-        ReverseProxyConfig,
+        RestService,
+        ReverseProxyLink,
         InvalidJson
     }
 }

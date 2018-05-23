@@ -13,7 +13,6 @@ namespace R.Services
         void CompleteUpdate();
         void ReleaseConfiguration();
         void ReplaceEndPoints(ICollection<IEndPoint> endPoint);
-
         List<IEndPoint> EndPoints { get; set; }
     }
 }
