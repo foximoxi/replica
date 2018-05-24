@@ -15,7 +15,6 @@ namespace R.Services
 {
     public class ConfigurationUpdateService : IConfigurationUpdateService
     {
-        public IApplicationBuilder ApplicationBuilder { get; set; }
         public ILogger Log { get; private set; }
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
