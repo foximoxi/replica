@@ -21,27 +21,28 @@ namespace R.Services.Update
             foreach (var path in allFiles)
                 PackageFiles.Add(new PackageFile(path));
         }
-        
+
         public bool Unpack(DateTime lastUpdateTime)
         {
             var extractor = new Helpers.ConfigExtractor();
             foreach (var p in PackageFiles)
             {
-                Analyse(p,lastUpdateTime);
+                Analyse(p, lastUpdateTime);
                 if (p.Status == PackageFileStatus.ShouldAnalyse)
                 {
                     extractor.ReadConfig(p);
+                    p.Status = (p.Config != null) ? PackageFileStatus.AnalyzedReady : PackageFileStatus.AnalyzedNotRecognized;
                 }
-            }            
+            }
             return true;
         }
 
-        void Analyse(PackageFile p,DateTime lastUpdateTime)
+        void Analyse(PackageFile p, DateTime lastUpdateTime)
         {
             if (p.FileInfo.LastWriteTime < lastUpdateTime)
                 p.Status = PackageFileStatus.NotModified;
             else
-                p.Status = PackageFileStatus.Modified;
+                p.Status = PackageFileStatus.ShouldAnalyse;
         }
     }
 }

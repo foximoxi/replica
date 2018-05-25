@@ -6,11 +6,11 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using R.Public;
 using R.Config;
 using R.Component.Config;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace R.Helpers
 {

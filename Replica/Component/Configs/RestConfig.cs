@@ -14,5 +14,6 @@ namespace R.Component.Config
         public bool Delete { get; set; }
         public bool All { get; set; }
         public string Schema { get; set; }
+        public R.Public.HttpMethod Method { get; set; }
     }
 }

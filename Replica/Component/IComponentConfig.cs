@@ -8,5 +8,6 @@ namespace R.Component.Config
     public interface IComponentConfig
     {
         string Uri { get; set; }
+        R.Public.HttpMethod Method { get; set; }
     }
 }

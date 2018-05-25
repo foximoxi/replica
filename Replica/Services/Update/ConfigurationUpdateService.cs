@@ -14,11 +14,12 @@ namespace R.Services
 {
     public class ConfigurationUpdateService : IConfigurationUpdateService
     {
-        public ILogger Log { get; private set; }
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
 
+        public ILogger Log { get; private set; }
         public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
+
         public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService)
         {
             StatusService = statusSvc;
@@ -43,11 +44,6 @@ namespace R.Services
             }
         }
 
-        public void ReleaseConfiguration()
-        {
-            this.RoutingTableService.ReleaseConfiguration();
-            System.GC.Collect();
-        }
         #endregion
 
         object lockObj = new object();
@@ -58,8 +54,9 @@ namespace R.Services
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
                 if (pkg.Unpack(this.LastUpdateTime))
                 {
-                    RoutingTableService.ReleaseConfiguration();
+                    this.RoutingTableService.ReleaseConfiguration();
                     RoutingTableService.ReplaceEndPoints(EndPoints(pkg));
+                    GC.Collect();
                     Log.LogInformation("Configuration update completed. No errors.");
                     LastUpdateTime = DateTime.Now;
                 }
@@ -80,11 +77,13 @@ namespace R.Services
         {
             ComponentFactory factory = new ComponentFactory();
             List<IEndPoint> res = new List<IEndPoint>();
-            foreach (var p in pkg.PackageFiles)
+            foreach (var p in pkg.PackageFiles.Where(x=>x.Status== PackageFileStatus.AnalyzedReady))
             {
-                new RestEndPoint() { Uri = p.Config.Uri, Component = factory.Create(p.Config), IsParametrized = true, Method = Public.HttpMethod.GET };
+                var c = factory.Create(p.Config);
+                var ep=new RestEndPoint() { Uri = p.Config.Uri, Component = c, IsParametrized = IsParametrized(p), Method = Public.HttpMethod.GET };
+                res.Add(ep); 
             }
-            return null;
+            return res;
         }
 
         bool IsParametrized(PackageFile p)

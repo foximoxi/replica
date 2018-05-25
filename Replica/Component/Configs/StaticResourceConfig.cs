@@ -11,5 +11,6 @@ namespace R.Component.Config
         public string FilePath { get; set; }
         public int FileType { get; set; }
         public string Schema { get; set; }
+        public R.Public.HttpMethod Method { get; set; } = Public.HttpMethod.GET;
     }
 }

@@ -25,6 +25,8 @@ namespace R.Config
         Unknown,
         ShouldAnalyse,
         NotModified,
-        Modified
+        Modified,
+        AnalyzedReady,
+        AnalyzedNotRecognized
     }
 }
