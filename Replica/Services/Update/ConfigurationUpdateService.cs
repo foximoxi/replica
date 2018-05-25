@@ -28,7 +28,6 @@ namespace R.Services
             Log = logger.CreateLogger(nameof(ConfigurationUpdateService));
         }
 
-        #region publicMethods
         public void UpdateConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
             try
@@ -44,8 +43,6 @@ namespace R.Services
             }
         }
 
-        #endregion
-
         object lockObj = new object();
         void ApplyConfiguration(R.Config.Update.IUpdatePackage pkg)
         {
@@ -56,8 +53,8 @@ namespace R.Services
                 {
                     RoutingTableService.ReplaceEndPoints(EndPoints(pkg));
                     GC.Collect();
-                    Log.LogInformation("Configuration update completed. No errors.");
                     LastUpdateTime = DateTime.Now;
+                    Log.LogInformation("Configuration update completed. No errors.");
                 }
                 else
                 {
@@ -76,18 +73,13 @@ namespace R.Services
         {
             ComponentFactory factory = new ComponentFactory();
             List<IEndPoint> res = new List<IEndPoint>();
-            foreach (var p in pkg.PackageFiles.Where(x=>x.Status== PackageFileStatus.AnalyzedReady))
+            foreach (var p in pkg.PackageFiles.Where(x => x.Status == PackageFileStatus.AnalyzedReady))
             {
                 var c = factory.Create(p.Config);
-                var ep=new RestEndPoint() { Uri = p.Config.Uri, Component = c, IsParametrized = IsParametrized(p), Method = Public.HttpMethod.GET };
-                res.Add(ep); 
+                var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = Public.HttpMethod.GET };
+                res.Add(ep);
             }
             return res;
-        }
-
-        bool IsParametrized(PackageFile p)
-        {
-            return p.Config.Uri.Contains("{");
         }
     }
 }
