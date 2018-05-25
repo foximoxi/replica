@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using R.Public;
 using R.Config;
 using R.Component.Config;
+using Newtonsoft.Json.Schema;
 
 namespace R.Helpers
 {
@@ -30,10 +31,25 @@ namespace R.Helpers
                 try
                 {
                     var res = jsonHelper.DeserializeFromDisk<RestConfig>(pkg.FileInfo.FullName);
+                    if (!String.IsNullOrEmpty(res.Schema))
+                    {
+                        string path = res.Schema;
+                        if (!File.Exists(path))
+                            path=System.IO.Path.Combine(pkg.FileInfo.DirectoryName, path);
+                        if (File.Exists(path))
+                        {
+                            using (StreamReader file = File.OpenText(path))
+                            using (JsonTextReader reader = new JsonTextReader(file))
+                            {
+                                res.JsonSchema = JSchema.Load(reader);
+                            }
+                        }
+                    }
                     return res;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    string s = ex.Message;
                 }
             }
             return null;
