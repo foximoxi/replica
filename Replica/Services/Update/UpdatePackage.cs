@@ -13,7 +13,6 @@ namespace R.Services.Update
     {
         public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
         R.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();
-        Dictionary<string, IComponent> Components = new Dictionary<string, IComponent>();
         public List<PackageFile> PackageFiles { get; set; }
 
         public UpdatePackage(ICollection<string> allFiles)
@@ -43,6 +42,19 @@ namespace R.Services.Update
                 p.Status = PackageFileStatus.NotModified;
             else
                 p.Status = PackageFileStatus.Modified;
+        }
+
+        public List<IEndPoint> EndPoints
+        {
+            get
+            {
+                List<IEndPoint> res = new List<IEndPoint>();
+                foreach (var p in PackageFiles)
+                {
+                    new RestEndPoint() { Uri = p.Config.Uri, Component = p.Component, IsParametrized = true };
+                }                
+                return null;
+            }
         }
     }
 }

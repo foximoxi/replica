@@ -18,16 +18,15 @@ namespace R.Services
         public ILogger Log { get; private set; }
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
-        private IComponentService componentService { get; set; }
+        
         public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
 
-        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService, IComponentService componentService)
+        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService)
         {
             StatusService = statusSvc;
             RoutingTableService = routingTableService;
-
-            statusSvc.Status[typeof(ComponentService).Name] = ServiceStatus.Running;
-            Log = logger.CreateLogger(nameof(ComponentService));
+            statusSvc.Status[typeof(ConfigurationUpdateService).Name] = ServiceStatus.Running;
+            Log = logger.CreateLogger(nameof(ConfigurationUpdateService));
         }
 
         #region publicMethods
@@ -63,8 +62,8 @@ namespace R.Services
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
                 if (pkg.Unpack(this.LastUpdateTime))
                 {
-                    componentService.Update(pkg);
-                    this.RoutingTableService.CompleteUpdate();
+                    RoutingTableService.ReleaseConfiguration();
+                    RoutingTableService.ReplaceEndPoints(pkg.EndPoints);                    
                     Log.LogInformation("Configuration update completed. No errors.");
                     LastUpdateTime = DateTime.Now;
                 }
@@ -73,7 +72,6 @@ namespace R.Services
                     string msg = "";
                     Log.LogInformation($"Configuration update failed:{msg}");
                 }
-
             }
         }
 

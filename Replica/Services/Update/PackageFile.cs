@@ -17,6 +17,7 @@ namespace R.Config
         public R.Component.Config.IComponentConfig Config { get; set; }
         public System.IO.FileInfo FileInfo { get; set; }
         public PackageFileStatus Status { get; set; } = PackageFileStatus.Unknown;
+        public R.Component.IComponent Component { get; set; }
     }
 
     public enum PackageFileStatus
