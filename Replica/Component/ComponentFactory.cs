@@ -29,12 +29,12 @@ namespace R.Component
 
         public RestComponent CreateComponent(RestConfig config)
         {
-            return new CustomRestComponent() { Config = config };
+            return new CustomRestComponent() { Configuration = config };
         }
 
         public StaticResourceComponent CreateComponent(StaticResourceConfig config)
         {
-            return new StaticResourceComponent() { Config = config };
+            return new StaticResourceComponent() { Configuration = config };
         }
     }
 }

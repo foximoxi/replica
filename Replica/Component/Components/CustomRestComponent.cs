@@ -10,7 +10,9 @@ namespace R.Component
 {
     public class CustomRestComponent : RestComponent
     {
-        //var dir = R.Component.RestComponent.SHA1(cfg.Uri);
+        R.Component.Config.RestConfig Config { get; set; }
+        string SavePath { get; set; }
+        
         public async override Task Invoke(IRequestContext ctx)
         {
             switch (ctx.HttpMethod)
@@ -28,13 +30,14 @@ namespace R.Component
                     Get(ctx);
                     break;
             }
-
         }
 
-        Config.RestConfig Cfg
+        public override void Init()
         {
-            get => this.Config as Config.RestConfig;
+            this.Config = this.Configuration as Config.RestConfig;
+            this.SavePath = System.IO.Path.Combine("c:\\rest" + R.Component.RestComponent.SHA1(this.Config.Uri));
         }
+
 
         void Get(IRequestContext ctx)
         {
@@ -58,9 +61,7 @@ namespace R.Component
 
         async Task Post(IRequestContext ctx)
         {
-            var cfg = this.Cfg;
-            var dir=R.Component.RestComponent.SHA1(cfg.Uri);
-            System.IO.File.WriteAllText("c:\\rest\\"+dir,ctx.BodyString+".json",Encoding.UTF8);
+            System.IO.File.WriteAllText(SavePath + ".json", ctx.BodyString,Encoding.UTF8);
             await Task.Run(() => { ctx.Response = "{\"msg\":\"afs\"}"; });
         }
     }

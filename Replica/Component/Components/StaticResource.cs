@@ -19,7 +19,7 @@ namespace R.Component
 
         StaticResourceConfig Cfg
         {
-            get => this.Config as StaticResourceConfig;
+            get => this.Configuration as StaticResourceConfig;
         }
     }
 }

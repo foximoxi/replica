@@ -15,7 +15,7 @@ using Newtonsoft.Json.Schema;
 
 namespace R.Helpers
 {
-    public class ConfigExtractor : ReflectionHelper
+    public class ConfigExtractor
     {
         R.Helpers.JsonHelper jsonHelper = new JsonHelper();
         public void ReadConfig(R.Config.PackageFile pkg)
@@ -48,6 +48,7 @@ namespace R.Helpers
             }
             catch (Exception ex)
             {
+                string s=ex.Message;
                 pkg.Status = PackageFileStatus.AnalyzedNotRecognized;
             }            
         }

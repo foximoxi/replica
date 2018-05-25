@@ -18,9 +18,9 @@ namespace R.Component
     {
         public R.Config.EndPointUri CustomUri { get; }
         public ILogger Log { get; set; }
-        public IComponentConfig Config { get; set; }
+        public IComponentConfig Configuration { get; set; }
 
-        public RestComponent()
+        public virtual void Init()
         {
         }
 
