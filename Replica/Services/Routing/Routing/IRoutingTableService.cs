@@ -11,7 +11,6 @@ namespace R.Services
         void Register(R.Config.IRestEndPoint endPoint);
         KeyValuePair<R.Config.IEndPoint, Dictionary<string, string>> Route(string uri, HttpMethod restMethod);
         void CompleteUpdate();
-        void ReleaseConfiguration();
         void ReplaceEndPoints(ICollection<IEndPoint> endPoint);
         List<IEndPoint> EndPoints { get; set; }
     }

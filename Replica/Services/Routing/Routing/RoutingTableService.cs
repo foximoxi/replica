@@ -10,15 +10,14 @@ namespace R.Services
 {
     public class RoutingTableService : IRoutingTableService
     {
-        private Dictionary<string, object> Parametrized { get; set; } = new Dictionary<string, object>();
-        private Dictionary<string, List<IRestEndPoint>> NonParametrized { get; set; } = new Dictionary<string, List<IRestEndPoint>>();
-        //private Dictionary<string, IEndPoint> NonParametrized { get; set; } = new Dictionary<string, IEndPoint>();
-        public List<IEndPoint> EndPoints { get; set; } = new List<IEndPoint>();
+        private Dictionary<string, object> Parametrized { get; set; }
+        private Dictionary<string, List<IRestEndPoint>> NonParametrized { get; set; } 
+        public List<IEndPoint> EndPoints { get; set; }
         public ILogger Log { get; private set; }
 
         public void ReplaceEndPoints(ICollection<IEndPoint> endPoints)
         {
-            Clear();
+            ReleaseConfiguration();
             foreach (var e in endPoints)
             {
                 if (e is IRestEndPoint)
@@ -28,23 +27,17 @@ namespace R.Services
             }
         }
 
-        public void CompleteUpdate()
-        {
-            ReplaceEndPoints(EndPoints);
-        }
-
-        public void ReleaseConfiguration()
+        void ReleaseConfiguration()
         {
             Parametrized  = new Dictionary<string, object>();
             NonParametrized  = new Dictionary<string, List<IRestEndPoint>>();
             EndPoints = new List<IEndPoint>();
         }
 
-        void Clear()
+        public void CompleteUpdate()
         {
-            Parametrized = new Dictionary<string, object>();
-            NonParametrized = new Dictionary<string, List<IRestEndPoint>>();
         }
+
         public void Register(IRestEndPoint endPoint)
         {
             if (!endPoint.Uri.Contains("{"))

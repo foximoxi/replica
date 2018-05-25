@@ -54,7 +54,6 @@ namespace R.Services
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
                 if (pkg.Unpack(this.LastUpdateTime))
                 {
-                    this.RoutingTableService.ReleaseConfiguration();
                     RoutingTableService.ReplaceEndPoints(EndPoints(pkg));
                     GC.Collect();
                     Log.LogInformation("Configuration update completed. No errors.");
