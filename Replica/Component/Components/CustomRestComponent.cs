@@ -37,7 +37,7 @@ namespace R.Component
         public override void Init()
         {
             this.Config = this.Configuration as Config.RestConfig;
-            this.SavePath = System.IO.Path.Combine("c:\\rest" + R.Component.RestComponent.SHA1(this.Config.Uri) + "\\");
+            this.SavePath = System.IO.Path.Combine("c:\\rest\\" + R.Component.RestComponent.SHA1(this.Config.Uri) + "\\");
         }
 
 
