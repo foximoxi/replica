@@ -18,8 +18,9 @@ namespace R.Services
         public ILogger Log { get; private set; }
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
+        private IComponentService componentService { get; set; }
 
-        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService)
+        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService, IComponentService componentService)
         {
             StatusService = statusSvc;
             RoutingTableService = routingTableService;
@@ -61,6 +62,7 @@ namespace R.Services
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
                 if (pkg.Unpack())
                 {
+                    componentService.Update(pkg);
                     this.RoutingTableService.CompleteUpdate();
                     Log.LogInformation("Configuration update completed. No errors.");
                 }

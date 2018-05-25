@@ -5,7 +5,7 @@ using R.Config;
 using R.Config.Update;
 using Newtonsoft.Json.Linq;
 
-namespace R.Services.Update
+namespace R.Config
 {
     public class PackageFile
     {

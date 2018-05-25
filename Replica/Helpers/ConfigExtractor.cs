@@ -17,16 +17,23 @@ namespace R.Helpers
     public class ConfigExtractor : ReflectionHelper
     {
         R.Helpers.JsonHelper jsonHelper = new JsonHelper();
-        IComponentConfig Decode(FileInfo fileinfo)
+        public IComponentConfig Read(R.Config.PackageFile pf)
         {
             try
             {
-                var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(fileinfo.FullName);
+                var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(pf.FileInfo.FullName);
                 return res;
             }
-            catch (Exception ex)
+            catch
             {
-                var res = jsonHelper.DeserializeFromDisk<RestConfig>(fileinfo.FullName);
+                try
+                {
+                    var res = jsonHelper.DeserializeFromDisk<RestConfig>(pf.FileInfo.FullName);
+                    return res;
+                }
+                catch
+                {
+                }
             }
             return null;
         }

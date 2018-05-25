@@ -22,9 +22,14 @@ namespace R.Services.Update
             foreach (var path in allFiles)
                 PackageFiles.Add(new PackageFile(path));
         }
-
+        
         public bool Unpack()
         {
+            var extractor = new Helpers.ConfigExtractor();
+            foreach (var p in PackageFiles)
+            {
+                extractor.Read(p);
+            }            
             return true;
         }
     }

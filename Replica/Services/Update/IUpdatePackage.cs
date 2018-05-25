@@ -8,5 +8,6 @@ namespace R.Config.Update
     public interface IUpdatePackage
     {
         bool Unpack();
+        List<PackageFile> PackageFiles { get; set; }
     }
 }

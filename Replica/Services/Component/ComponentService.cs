@@ -22,6 +22,10 @@ namespace R.Services
 
         public void Update(R.Config.Update.IUpdatePackage pkg)
         {
+            foreach (var p in pkg.PackageFiles)
+            {
+
+            }
             //Views.Update(pkg.Views, (ICollection<ViewDefinition> coll) => { return coll.ToDictionary(x => x.Uri); });
             //TypedViews.Update(pkg.TypedViews, (ICollection<ViewDefinition> coll) => { return coll.ToDictionary(x => x.Uri); });
         }
