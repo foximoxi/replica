@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyModel;
 using Newtonsoft.Json;
 using R.Public;
 using R.Config;
+using R.Component.Config;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace R.Helpers
@@ -20,12 +21,12 @@ namespace R.Helpers
         {
             try
             {
-                var res = jsonHelper.DeserializeFromDisk<R.Component.StaticResourceConfig>(fileinfo.FullName);
+                var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(fileinfo.FullName);
                 return res;
             }
             catch (Exception ex)
             {
-                var res = jsonHelper.DeserializeFromDisk<R.Component.RestConfig>(fileinfo.FullName);
+                var res = jsonHelper.DeserializeFromDisk<RestConfig>(fileinfo.FullName);
             }
             return null;
         }

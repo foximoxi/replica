@@ -1,5 +1,6 @@
 ﻿using System;
 using R.Public;
+using R.Component;
 
 namespace R.Config
 {

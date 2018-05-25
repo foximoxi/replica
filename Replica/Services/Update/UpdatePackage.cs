@@ -5,10 +5,11 @@ using System.Linq;
 using R.Config;
 using R.Config.Update;
 using Newtonsoft.Json.Linq;
+using R.Component;
 
 namespace R.Services.Update
 {
-    public class UpdatePackage : R.Config.Update.IUpdatePackage
+    public class UpdatePackage : IUpdatePackage
     {
         public Dictionary<string, FileType> RecognizedFiles { get; set; } = new Dictionary<string, FileType>();
         R.Helpers.FileSerializer fileSerializer = new Helpers.FileSerializer();

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
-
 using R.Config;
 
 namespace R.Component
@@ -14,9 +13,9 @@ namespace R.Component
             return base.Invoke(ctx);
         }
 
-        RestConfig Cfg
+        Config.RestConfig Cfg
         {
-            get => this.Config as RestConfig;
+            get => this.Config as Config.RestConfig;
         }
     }
 }

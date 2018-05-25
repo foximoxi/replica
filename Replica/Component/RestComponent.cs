@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Reflection;
+using R.Component.Config;
 
 namespace R.Component
 {

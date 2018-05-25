@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
-
+using R.Component.Config;
 using R.Config;
 
 namespace R.Component
