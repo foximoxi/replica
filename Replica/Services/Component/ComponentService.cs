@@ -10,17 +10,16 @@ namespace R.Services
     public class ComponentService : IComponentService
     {
         R.Services.IRoutingTableService RoutingTableService { get; set; }
-        ICustomComponentFactory ComponentFactory { get; set; }
         public ILogger Log { get; private set; }
 
         public List<R.Component.CustomRestComponent> Rest { get; set; }
         public List<R.Component.StaticResourceComponent> Static { get; set; }
 
-        public ComponentService(IRoutingTableService routingTableService, R.Services.ICustomComponentFactory componentFactory)
+        public ComponentService(IRoutingTableService routingTableService)
         {
             this.RoutingTableService = routingTableService;
-            ComponentFactory = componentFactory;
         }
+
         public void Update(R.Config.Update.IUpdatePackage pkg)
         {
             //Views.Update(pkg.Views, (ICollection<ViewDefinition> coll) => { return coll.ToDictionary(x => x.Uri); });
@@ -29,8 +28,6 @@ namespace R.Services
 
         public void CompleteUpdate()
         {
-            //RoutingTableService.EndPoints = new List<IEndPoint>();
-            ComponentFactory.Clear();
         }
 
         public void ReleaseConfiguration()

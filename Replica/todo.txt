@@ -1,0 +1,6 @@
+﻿Zebranie plikow i fileinfo, odseparowanie pliku konfiguracji *.cfg
+wykluczenie komponentow, ktore maja ta sama konfiguracje (po dacie)
+usunięcie reszty
+utworzenie nowych
+przeladowanie routera
+
