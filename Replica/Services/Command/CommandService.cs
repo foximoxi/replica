@@ -45,7 +45,7 @@ namespace R.Services
         public object ShowLoadedOperations()
         {
             var res = new List<object>();
-            //res.AddRange(ComponentService.TypedInserts.Items.Values);
+            
             return res;
         }
         public object ShowEndPoints()
@@ -61,43 +61,10 @@ namespace R.Services
             context.Response.WriteAsync(res);*/
         }
 
-
         object AppRests()
         {
-            //var extractor = new X.Helpers.DefinitionExtractor();
             Dictionary<string, List<ExposedRest>> res = new Dictionary<string, List<ExposedRest>>();
-            //ExtractCollectionRests(res, this.ComponentService.TypedViews.GetEnumerator());
-            //ExtractCollectionRests(res, this.ComponentService.TypedInserts.GetEnumerator());
-            //ExtractCollectionRests(res, this.ComponentService.TypedUpdates.GetEnumerator());
-            //ExtractCollectionRests(res, this.ComponentService.TypedDeletes.GetEnumerator());
-            //ExtractCollectionRests(res, this.ComponentService.CustomComponents.GetEnumerator());
             return res;
-        }
-
-        string GetAssemblyName(R.Config.IOperationDefinition definition)
-        {
-            var assemblyName = definition.ExposedType?.AssemblyQualifiedName;
-            if (assemblyName == null)
-            {
-                if (definition is R.Config.CustomDefinition)
-                {
-                    var component = (R.Config.CustomDefinition)definition;
-                    assemblyName = component.ComponentType.AssemblyQualifiedName;
-                }
-            }
-            return assemblyName;
-        }
-
-        void ExtractCollectionRests(Dictionary<string, List<ExposedRest>> res, System.Collections.IEnumerator enu)
-        {
-            while (enu.MoveNext())
-            {
-                var c=enu.Current as R.Config.IOperationDefinition;
-                var assemblyName = GetAssemblyName(c);
-                if (res.ContainsKey(assemblyName) == false)
-                    res[assemblyName] = new List<ExposedRest>();
-                res[assemblyName].Add(new ExposedRest() { Uri = c.Uri, Op =c.Operation });
-            }
         }
 
         void Respond(object context, object obj)
@@ -169,7 +136,5 @@ namespace R.Services
     class ExposedRest
     {
         public string Uri { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public R.Public.Op Op { get; set; }
     }
 }

@@ -14,13 +14,6 @@ using R.Public;
 
 namespace R.Services
 {
-    public class SingleCrudTest
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-
     /// <summary>
     /// request processing and response preparation
     /// </summary>

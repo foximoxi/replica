@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace R.Security
 {
     /// <summary>
-    /// Interfejs profilu uzytkownika zwracanego z bazy
+    ///  User profile
     /// </summary>
     public class UserProfile
     {
