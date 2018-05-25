@@ -41,7 +41,10 @@ namespace R.Component
 
         void Get(IRequestContext ctx)
         {
+            if (ctx.InputParameters.ContainsKey("{" + Config.Identity + "}"))
+            {
 
+            }
         }
 
         void Delete(IRequestContext ctx)

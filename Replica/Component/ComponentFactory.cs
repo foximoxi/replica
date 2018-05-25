@@ -20,11 +20,13 @@ namespace R.Component
 
         public IComponent Create(IComponentConfig config)
         {
+            IComponent res = null;
             if (config is RestConfig)
-                return CreateComponent(config as RestConfig);
+                res=CreateComponent(config as RestConfig);
             if (config is StaticResourceConfig)
-                return CreateComponent(config as StaticResourceConfig);
-            return null;
+                res=CreateComponent(config as StaticResourceConfig);
+            res.Init();
+            return res;
         }
 
         public RestComponent CreateComponent(RestConfig config)
