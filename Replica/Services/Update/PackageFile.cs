@@ -25,7 +25,7 @@ namespace R.Config
     public enum PackageFileStatus
     {
         Unknown,
-        ShouldAnalyse,
+        BeforeAnalysis,
         NotModified,
         Modified,
         AnalyzedReady,

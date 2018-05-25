@@ -23,9 +23,8 @@ namespace R.Helpers
             try
             {
                 var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(pkg.FileInfo.FullName);
-                if (ValidateStaticConfig(pkg))
-                    pkg.Config = res;                
-                else
+                pkg.Config = res;
+                if (!ValidateStaticConfig(pkg))
                 {
                     var restCfg = jsonHelper.DeserializeFromDisk<RestConfig>(pkg.FileInfo.FullName);
                     pkg.Config = restCfg;
@@ -47,13 +46,15 @@ namespace R.Helpers
             }
             catch (Exception ex)
             {
-            }
-            
+                pkg.Status = PackageFileStatus.AnalyzedNotRecognized;
+            }            
         }
 
         bool ValidateStaticConfig(PackageFile pkg)
         {
             var cfg=pkg.Config as StaticResourceConfig;
+            if (cfg == null)
+                return false;
             if (cfg.Uri == null)
                 return false;
             if (cfg.FilePath == null)

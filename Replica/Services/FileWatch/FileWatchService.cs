@@ -33,10 +33,10 @@ namespace R.Services
             watcher = new FileSystemWatcher() { Path = WatchPath, IncludeSubdirectories=true };
             watcher.Changed += (sender, e) => { NotifyChangesHandler(sender, e); };
             watcher.Deleted += (sender, e) => { NotifyChangesHandler(sender, e); };
-            watcher.EnableRaisingEvents = true;
-            NotifySettingsChanges();
-            NotifyComponentChanges();
             StatusService.Status[typeof(FileWatchService).Name] = ServiceStatus.Running;
+            watcher.EnableRaisingEvents = true;            
+            NotifySettingsChanges();
+            NotifyComponentChanges();            
         }
 
         DateTime lastNotifyTime = DateTime.MinValue;

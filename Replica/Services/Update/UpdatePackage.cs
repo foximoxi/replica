@@ -28,10 +28,9 @@ namespace R.Services.Update
             foreach (var p in PackageFiles)
             {
                 Analyse(p, lastUpdateTime);
-                if (p.Status == PackageFileStatus.ShouldAnalyse)
+                if (p.Status == PackageFileStatus.BeforeAnalysis)
                 {
                     extractor.ReadConfig(p);
-                    p.Status = (p.Config != null) ? PackageFileStatus.AnalyzedReady : PackageFileStatus.AnalyzedNotRecognized;
                 }
             }
             return true;
@@ -42,7 +41,7 @@ namespace R.Services.Update
             if (p.FileInfo.LastWriteTime < lastUpdateTime)
                 p.Status = PackageFileStatus.NotModified;
             else
-                p.Status = PackageFileStatus.ShouldAnalyse;
+                p.Status = PackageFileStatus.BeforeAnalysis;
         }
     }
 }
