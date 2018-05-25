@@ -75,10 +75,14 @@ namespace R.Services
                 context.Response.ContentType = "application/json";
             var json = new R.Helpers.JsonHelper();
 
-            var settings = InitSerialization();
-
-            var s = JsonConvert.SerializeObject(request.Response, settings);
-            await context.Response.WriteAsync(s);
+            if (request.Response is string)
+                await context.Response.WriteAsync((string)request.Response);
+            else
+            {
+                var settings = InitSerialization();
+                var s = JsonConvert.SerializeObject(request.Response, settings);
+                await context.Response.WriteAsync(s);
+            }
             request.Status = RequestStatus.ResponseSend;
         }
     }

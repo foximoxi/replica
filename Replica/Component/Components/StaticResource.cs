@@ -12,7 +12,7 @@ namespace R.Component
         public override async Task Invoke(IRequestContext ctx)
         {            
             await Task.Run(() => {
-                ctx.Response = System.IO.File.ReadAllText(Cfg.FilePath);
+                ctx.Response = System.IO.File.ReadAllText(Cfg.FilePath, Encoding.UTF8);
                 ctx.ResponseType = ResponseType.JSON;
             });
         }
