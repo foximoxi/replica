@@ -26,8 +26,6 @@ namespace R.Services
             {
 
             }
-            //Views.Update(pkg.Views, (ICollection<ViewDefinition> coll) => { return coll.ToDictionary(x => x.Uri); });
-            //TypedViews.Update(pkg.TypedViews, (ICollection<ViewDefinition> coll) => { return coll.ToDictionary(x => x.Uri); });
         }
 
         public void CompleteUpdate()
@@ -40,7 +38,6 @@ namespace R.Services
 
         private R.Config.RestEndPoint CompleteCustomComponent(CustomDefinition v)
         {
-            //ComponentFactory.Create(v, PluginServices.Items);
             var endPoint = new R.Config.RestEndPoint() { Method = (HttpMethod)(int)v.Operation, Uri = v.Uri, Component = v.Component };
             if (!String.IsNullOrEmpty(v.Component.CustomUri))
             {

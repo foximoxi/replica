@@ -19,6 +19,7 @@ namespace R.Services
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
         private IComponentService componentService { get; set; }
+        public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
 
         public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService, IComponentService componentService)
         {
@@ -60,17 +61,19 @@ namespace R.Services
             lock (lockObj)
             {
                 Log.LogInformation("Begin of configuration update: " + DateTime.Now);
-                if (pkg.Unpack())
+                if (pkg.Unpack(this.LastUpdateTime))
                 {
                     componentService.Update(pkg);
                     this.RoutingTableService.CompleteUpdate();
                     Log.LogInformation("Configuration update completed. No errors.");
+                    LastUpdateTime = DateTime.Now;
                 }
                 else
                 {
                     string msg = "";
                     Log.LogInformation($"Configuration update failed:{msg}");
                 }
+
             }
         }
 

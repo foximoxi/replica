@@ -13,7 +13,17 @@ namespace R.Config
         {
             FileInfo = new System.IO.FileInfo(path);
         }
+
+        public R.Component.Config.IComponentConfig Config { get; set; }
         public System.IO.FileInfo FileInfo { get; set; }
-        
+        public PackageFileStatus Status { get; set; } = PackageFileStatus.Unknown;
+    }
+
+    public enum PackageFileStatus
+    {
+        Unknown,
+        ShouldAnalyse,
+        NotModified,
+        Modified
     }
 }

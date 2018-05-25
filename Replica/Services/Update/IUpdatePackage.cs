@@ -7,7 +7,7 @@ namespace R.Config.Update
 {
     public interface IUpdatePackage
     {
-        bool Unpack();
+        bool Unpack(DateTime lastUpdateTime);
         List<PackageFile> PackageFiles { get; set; }
     }
 }

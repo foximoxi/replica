@@ -23,14 +23,26 @@ namespace R.Services.Update
                 PackageFiles.Add(new PackageFile(path));
         }
         
-        public bool Unpack()
+        public bool Unpack(DateTime lastUpdateTime)
         {
             var extractor = new Helpers.ConfigExtractor();
             foreach (var p in PackageFiles)
             {
-                extractor.Read(p);
+                Analyse(p,lastUpdateTime);
+                if (p.Status == PackageFileStatus.ShouldAnalyse)
+                {
+                    extractor.ReadConfig(p);
+                }
             }            
             return true;
+        }
+
+        void Analyse(PackageFile p,DateTime lastUpdateTime)
+        {
+            if (p.FileInfo.LastWriteTime < lastUpdateTime)
+                p.Status = PackageFileStatus.NotModified;
+            else
+                p.Status = PackageFileStatus.Modified;
         }
     }
 }
