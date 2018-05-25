@@ -42,12 +42,26 @@ namespace R.Helpers
                             }
                         }
                     }
+                    ValidateRest(pkg);
+                    
                 }
             }
             catch (Exception ex)
             {
                 pkg.Status = PackageFileStatus.AnalyzedNotRecognized;
             }            
+        }
+
+        bool ValidateRest(PackageFile pkg)
+        {
+            var cfg = pkg.Config as RestConfig;
+            if (cfg == null)
+                return false;
+            if (cfg.Uri == null)
+                return false;
+
+            pkg.Status = PackageFileStatus.AnalyzedReady;
+            return true;
         }
 
         bool ValidateStaticConfig(PackageFile pkg)

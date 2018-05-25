@@ -76,7 +76,7 @@ namespace R.Services
             foreach (var p in pkg.PackageFiles.Where(x => x.Status == PackageFileStatus.AnalyzedReady))
             {
                 var c = factory.Create(p.Config);
-                var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = Public.HttpMethod.GET };
+                var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = p.Config.Method };
                 res.Add(ep);
             }
             return res;

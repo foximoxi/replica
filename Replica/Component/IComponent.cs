@@ -14,6 +14,5 @@ namespace R.Component
         ILogger Log { get; set; }
         Task Invoke(R.Config.IRequestContext context);
         R.Config.EndPointUri CustomUri { get; }
-        void Start();
     }
 }

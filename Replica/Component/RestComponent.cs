@@ -30,11 +30,6 @@ namespace R.Component
             return;
         }
 
-        public virtual void Start()
-        {
-
-        }
-
         protected async void ReturnErrorMessage(RequestStatus stage, HttpContext context, Exception ex)
         {
             //var err = new ErrorResponder();
@@ -58,6 +53,18 @@ namespace R.Component
             R.Helpers.JsonHelper s = new R.Helpers.JsonHelper();
             var item = s.DeserializeObject(ctx.BodyString, type);
             return item;
+        }
+
+        public static string SHA1(string randomString)
+        {
+            var crypt = new System.Security.Cryptography.SHA1Managed();//.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(System.Text.Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
         }
     }
 }

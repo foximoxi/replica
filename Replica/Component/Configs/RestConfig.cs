@@ -16,6 +16,7 @@ namespace R.Component.Config
         public bool All { get; set; }
         public string Schema { get; set; }
         public R.Public.HttpMethod Method { get; set; }
+        public string Identity { get; set; }
         public JSchema JsonSchema { get; set; }
     }
 }
