@@ -9,6 +9,5 @@ namespace R.Config.Update
     {
         bool Unpack(DateTime lastUpdateTime);
         List<PackageFile> PackageFiles { get; set; }
-        List<IEndPoint> EndPoints { get; }
     }
 }

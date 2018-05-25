@@ -43,18 +43,5 @@ namespace R.Services.Update
             else
                 p.Status = PackageFileStatus.Modified;
         }
-
-        public List<IEndPoint> EndPoints
-        {
-            get
-            {
-                List<IEndPoint> res = new List<IEndPoint>();
-                foreach (var p in PackageFiles)
-                {
-                    new RestEndPoint() { Uri = p.Config.Uri, Component = p.Component, IsParametrized = true };
-                }                
-                return null;
-            }
-        }
     }
 }

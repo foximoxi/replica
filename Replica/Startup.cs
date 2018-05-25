@@ -35,7 +35,6 @@ namespace Replica
         {
             //app.ApplicationServices.GetService<X.Services.ISettingsService>().Start(cfg["configPath"]);
             app.ApplicationServices.GetService<R.Services.IFileWatchService>().Start("c:\\rest");
-            //app.ApplicationServices.GetService<X.Services.ICodeWatchService>().Start(cfg["shadowConfigPath"]);
             app.UseExtendedRouter(routingTableService, cmdService, responseService);
         }
     }

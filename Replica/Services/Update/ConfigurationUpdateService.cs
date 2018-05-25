@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using R.Services;
+using R.Config;
+using R.Component;
 
 namespace R.Services
 {
@@ -18,9 +17,8 @@ namespace R.Services
         public ILogger Log { get; private set; }
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
-        
-        public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
 
+        public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
         public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService)
         {
             StatusService = statusSvc;
@@ -47,8 +45,6 @@ namespace R.Services
 
         public void ReleaseConfiguration()
         {
-            //this.ComponentService.ReleaseConfiguration();
-            //this.DataServices.ReleaseConfiguration();
             this.RoutingTableService.ReleaseConfiguration();
             System.GC.Collect();
         }
@@ -63,7 +59,7 @@ namespace R.Services
                 if (pkg.Unpack(this.LastUpdateTime))
                 {
                     RoutingTableService.ReleaseConfiguration();
-                    RoutingTableService.ReplaceEndPoints(pkg.EndPoints);                    
+                    RoutingTableService.ReplaceEndPoints(EndPoints(pkg));
                     Log.LogInformation("Configuration update completed. No errors.");
                     LastUpdateTime = DateTime.Now;
                 }
@@ -78,6 +74,22 @@ namespace R.Services
         public void UpdateSettings(ICollection<string> paths)
         {
             //SettingsService.Update(paths);
+        }
+
+        List<IEndPoint> EndPoints(R.Config.Update.IUpdatePackage pkg)
+        {
+            ComponentFactory factory = new ComponentFactory();
+            List<IEndPoint> res = new List<IEndPoint>();
+            foreach (var p in pkg.PackageFiles)
+            {
+                new RestEndPoint() { Uri = p.Config.Uri, Component = factory.Create(p.Config), IsParametrized = true, Method = Public.HttpMethod.GET };
+            }
+            return null;
+        }
+
+        bool IsParametrized(PackageFile p)
+        {
+            return p.Config.Uri.Contains("{");
         }
     }
 }
