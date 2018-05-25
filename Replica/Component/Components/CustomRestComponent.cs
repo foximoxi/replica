@@ -5,6 +5,8 @@ using System.Text;
 using R.Config;
 using R.Public;
 using System.Security.Cryptography;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace R.Component
 {
@@ -12,7 +14,7 @@ namespace R.Component
     {
         R.Component.Config.RestConfig Config { get; set; }
         string SavePath { get; set; }
-        
+
         public async override Task Invoke(IRequestContext ctx)
         {
             switch (ctx.HttpMethod)
@@ -35,7 +37,7 @@ namespace R.Component
         public override void Init()
         {
             this.Config = this.Configuration as Config.RestConfig;
-            this.SavePath = System.IO.Path.Combine("c:\\rest" + R.Component.RestComponent.SHA1(this.Config.Uri));
+            this.SavePath = System.IO.Path.Combine("c:\\rest" + R.Component.RestComponent.SHA1(this.Config.Uri) + "\\");
         }
 
 
@@ -64,8 +66,31 @@ namespace R.Component
 
         async Task Post(IRequestContext ctx)
         {
-            System.IO.File.WriteAllText(SavePath + ".json", ctx.BodyString,Encoding.UTF8);
-            await Task.Run(() => { ctx.Response = "{\"msg\":\"afs\"}"; });
+            await Task.Run(() =>
+            {
+                if (!String.IsNullOrEmpty(Config.Identity))
+                {
+                    JObject o = JObject.Parse(ctx.BodyString);
+                    var id = (string)o[Config.Identity];
+                    if (id == null)
+                    {
+                        o[Config.Identity] = id = GetNextIdentity();
+                    }
+                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(o);
+                    if (System.IO.Directory.Exists(SavePath) == false)
+                        System.IO.Directory.CreateDirectory(SavePath);
+                    System.IO.File.WriteAllText(SavePath + id + ".json", Newtonsoft.Json.JsonConvert.SerializeObject(str), Encoding.UTF8);
+                    ctx.Response = str;
+                }
+            });
+        }
+
+        int cnt = 0;
+        string GetNextIdentity()
+        {
+            cnt++;
+            return cnt.ToString();
         }
     }
+
 }
