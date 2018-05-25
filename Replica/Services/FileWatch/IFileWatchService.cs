@@ -7,6 +7,6 @@ namespace R.Services
     {
         string WatchPath { get; }
         void Start(string watchPath);
-        void NotifyConfigurationChange();
+        void NotifyComponentChanges();
     }
 }

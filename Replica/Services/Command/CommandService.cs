@@ -130,7 +130,7 @@ namespace R.Services
 
         object ConfigRestart()
         {
-            FileWatchService.NotifyConfigurationChange();return null;
+            FileWatchService.NotifyComponentChanges();return null;
         }
 
         

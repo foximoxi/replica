@@ -7,7 +7,7 @@ using R.Config;
 
 namespace R.Component
 {
-    public class StaticResourceConfig
+    public class StaticResourceConfig:IComponentConfig
     {
         public string Uri { get; set; }
         public string FilePath { get; set; }

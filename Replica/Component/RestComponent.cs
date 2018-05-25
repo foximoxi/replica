@@ -17,6 +17,7 @@ namespace R.Component
     {
         public R.Config.EndPointUri CustomUri { get; }
         public ILogger Log { get; set; }
+        public IComponentConfig Config { get; set; }
 
         public RestComponent()
         {

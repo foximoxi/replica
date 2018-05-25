@@ -9,6 +9,7 @@ namespace R.Config
 {
     public interface IComponent
     {
+        IComponentConfig Config { get; set; }
         ILogger Log { get; set; }
         Task Invoke(IRequestContext context);
         R.Config.EndPointUri CustomUri { get; }

@@ -7,7 +7,7 @@ using R.Config;
 
 namespace R.Component
 {
-    public class RestConfig
+    public class RestConfig:IComponentConfig
     {
         public string Uri { get; set; }
         public bool Get { get; set; }

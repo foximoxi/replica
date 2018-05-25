@@ -13,5 +13,10 @@ namespace R.Component
         {
             return base.Invoke(ctx);
         }
+
+        RestConfig Cfg
+        {
+            get => this.Config as RestConfig;
+        }
     }
 }

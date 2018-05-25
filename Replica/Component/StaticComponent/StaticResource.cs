@@ -9,13 +9,17 @@ namespace R.Component
 {
     public class StaticResourceComponent: RestComponent
     {
-        StaticResourceConfig Config { get; set; }
         public override async Task Invoke(IRequestContext ctx)
         {            
             await Task.Run(() => {
-                ctx.Response = System.IO.File.ReadAllText(Config.FilePath);
+                ctx.Response = System.IO.File.ReadAllText(Cfg.FilePath);
                 ctx.ResponseType = ResponseType.JSON;
             });
+        }
+
+        StaticResourceConfig Cfg
+        {
+            get => this.Config as StaticResourceConfig;
         }
     }
 }

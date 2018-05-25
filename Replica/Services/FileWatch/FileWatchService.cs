@@ -33,9 +33,9 @@ namespace R.Services
             watcher = new FileSystemWatcher() { Path = WatchPath, IncludeSubdirectories=true };
             watcher.Changed += (sender, e) => { NotifyChangesHandler(sender, e); };
             watcher.Deleted += (sender, e) => { NotifyChangesHandler(sender, e); };
-            watcher.EnableRaisingEvents = true;            
-            NotifyAllSettingsChanges();
-            NotifyConfigurationChange();
+            watcher.EnableRaisingEvents = true;
+            NotifySettingsChanges();
+            NotifyComponentChanges();
             StatusService.Status[typeof(FileWatchService).Name] = ServiceStatus.Running;
         }
 
@@ -47,23 +47,11 @@ namespace R.Services
             {
                 lastPathChanged = e.FullPath;
                 lastNotifyTime = DateTime.Now;
-                if (lastPathChanged.EndsWith(".cfg", StringComparison.CurrentCultureIgnoreCase))
+                if (lastPathChanged.EndsWith("replica.cfg", StringComparison.CurrentCultureIgnoreCase))
                     NotifySettingsChanges();
                 else
-                    NotifyConfigurationChange();
+                    NotifyComponentChanges();
             }
-        }
-
-        public void NotifyConfigurationChange()
-        {
-            UpdateService.UpdateConfiguration(new Update.UpdatePackage(GetAllFiles()));            
-        }
-
-        void NotifyAllSettingsChanges()
-        {
-            var settings=GetPackageFiles("*.cfg");
-            if (settings!=null)
-                UpdateService.UpdateSettings(settings);
         }
 
         void NotifySettingsChanges()
@@ -71,18 +59,15 @@ namespace R.Services
             UpdateService.UpdateSettings(new string[] { lastPathChanged });
         }
 
+        public void NotifyComponentChanges()
+        {
+            UpdateService.UpdateConfiguration(new Update.UpdatePackage(GetAllFiles()));
+        }
+
         ICollection<string> GetAllFiles()
         {
             var files = Directory.GetFiles(WatchPath, "*.*", SearchOption.AllDirectories).ToList();
             return files;
-        }
-
-        public List<string> GetPackageFiles(string pattern)
-        {
-            var dataSourcesChanged = GetChangedFiles(pattern);
-            if (dataSourcesChanged.Count > 0)
-                return Directory.GetFiles(WatchPath, pattern, SearchOption.AllDirectories).ToList();
-            return null;
         }
 
         DateTime lastRefreshDateTime = DateTime.MinValue;
