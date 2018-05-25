@@ -18,6 +18,8 @@ namespace R.Config
         public System.IO.FileInfo FileInfo { get; set; }
         public PackageFileStatus Status { get; set; } = PackageFileStatus.Unknown;
         public R.Component.IComponent Component { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 
     public enum PackageFileStatus
@@ -27,6 +29,7 @@ namespace R.Config
         NotModified,
         Modified,
         AnalyzedReady,
-        AnalyzedNotRecognized
+        AnalyzedNotRecognized,
+        AnalyzedConfigurationError
     }
 }

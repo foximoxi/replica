@@ -17,18 +17,19 @@ namespace R.Helpers
     public class ConfigExtractor : ReflectionHelper
     {
         R.Helpers.JsonHelper jsonHelper = new JsonHelper();
-        public IComponentConfig ReadConfig(R.Config.PackageFile pf)
+        public IComponentConfig ReadConfig(R.Config.PackageFile pkg)
         {
             try
             {
-                var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(pf.FileInfo.FullName);
-                pf.Config = res;
+                var res = jsonHelper.DeserializeFromDisk<StaticResourceConfig>(pkg.FileInfo.FullName);
+                pkg.Config = res;
+                ValidateStaticConfig(pkg);
             }
             catch
             {
                 try
                 {
-                    var res = jsonHelper.DeserializeFromDisk<RestConfig>(pf.FileInfo.FullName);
+                    var res = jsonHelper.DeserializeFromDisk<RestConfig>(pkg.FileInfo.FullName);
                     return res;
                 }
                 catch
@@ -36,6 +37,21 @@ namespace R.Helpers
                 }
             }
             return null;
+        }
+
+        void ValidateStaticConfig(PackageFile pkg)
+        {
+            var cfg = pkg.Config as StaticResourceConfig;
+            if (!File.Exists(cfg.FilePath))
+            {
+                pkg.Status = PackageFileStatus.AnalyzedConfigurationError;
+                var relativePath=System.IO.Path.Combine(pkg.FileInfo.DirectoryName, cfg.FilePath);
+                if (File.Exists(relativePath))
+                {
+                    cfg.FilePath = relativePath;
+                    pkg.Status = PackageFileStatus.AnalyzedReady;                    
+                }
+            }
         }
     }
 }
