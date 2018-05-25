@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using R.Public;
 using Microsoft.Extensions.Logging;
+using R.Component.Config;
 
 namespace R.Config
 {

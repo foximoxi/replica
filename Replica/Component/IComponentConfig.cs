@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
 
-namespace R.Config
+namespace R.Component.Config
 {
     public interface IComponentConfig
     {

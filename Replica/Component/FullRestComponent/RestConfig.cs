@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
 
-using R.Config;
-
-namespace R.Component
+namespace R.Component.Config
 {
     public class RestConfig:IComponentConfig
     {
