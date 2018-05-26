@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using R.Config;
 using R.Component;
+using R.Config;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
@@ -17,12 +17,22 @@ namespace R.Services
 {
     public class PseudoDbService: IPseudoDbService
     {
-        public Dictionary<string, Collection> ObjectCollections { get; set; }
+        public Dictionary<string, Collection> ObjectCollections { get; set; } = new Dictionary<string, Collection>();
+
+        public void AddCollection(string name,string identityName,string path)
+        {
+            if (!ObjectCollections.ContainsKey(name))
+            {
+                var coll = new Collection() { Name = name, IdentityFieldName = identityName, CollectionPath = path };
+                coll.Init();
+                ObjectCollections[name] = coll;
+            }
+        }
     }
 
     public class Collection
     {
-        public string ObjectName { get; set; }
+        public string Name { get; set; }
         public string CollectionPath { get; set; }
         public Dictionary<string, JObject> Values { get; set; }
         public string IdentityFieldName { get; set; }
@@ -32,6 +42,7 @@ namespace R.Services
         {
             IndexCollection();
         }
+
         public void Insert(string json)
         {
             var jo = JObject.Parse(json);
@@ -59,6 +70,7 @@ namespace R.Services
                 File.Delete(path);
             }
         }
+
         public string Get(string identity)
         {
             return JsonConvert.SerializeObject(Values[identity]);

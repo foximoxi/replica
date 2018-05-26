@@ -10,6 +10,7 @@ namespace R.Component.Config
     {
         public string Uri { get; set; }
         public R.Public.HttpMethod Method { get; set; }
+        public string Identity { get; set; }
         public string Schema { get; set; }
         public JSchema JsonSchema { get; set; }
     }

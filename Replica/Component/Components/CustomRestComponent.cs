@@ -8,6 +8,7 @@ using R.Public;
 using System.Security.Cryptography;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using R.Services;
 
 namespace R.Component
 {
@@ -38,8 +39,9 @@ namespace R.Component
         }
 
         public override void Init()
-        {            
+        {
             this.Config = this.Configuration as Config.RestConfig;
+            IdentityFieldName = this.Config.Identity;
             this.SavePath = System.IO.Path.Combine("c:\\rest\\" + PreparePath() + "\\");
             if (System.IO.Directory.Exists(SavePath) == false)
                 System.IO.Directory.CreateDirectory(SavePath);
@@ -47,16 +49,16 @@ namespace R.Component
 
         string RemoveBrackets(string s)
         {
-            var start=s.IndexOf("{");
+            var start = s.IndexOf("{");
             var end = s.IndexOf("}");
             if ((start != -1) && (end != -1))
                 if (start < end)
-                    s = s.Substring(0, start - 1) + s.Substring(end+1);
+                    s = s.Substring(0, start - 1) + s.Substring(end + 1);
             return s;
         }
         string PreparePath()
         {
-            var s=this.Config.Uri.Replace("/", ".");
+            var s = this.Config.Uri.Replace("/", ".");
             s = RemoveBrackets(s);
             if (s[0] == '.')
                 s = s.Substring(1);
@@ -72,12 +74,8 @@ namespace R.Component
             {
                 if (ctx.InputParameters.ContainsKey(identity))
                 {
-                    string path = System.IO.Path.Combine(SavePath, ctx.InputParameters[identity] + ".json");
-                    if (System.IO.File.Exists(path))
-                    {
-                        ctx.Response = System.IO.File.ReadAllText(path, Encoding.UTF8);
-                        ctx.ResponseType = ResponseType.JSON;
-                    }
+                    ctx.Response = this.Db.ObjectCollections["user"].Get(ctx.InputParameters[identity]);
+                    ctx.ResponseType = ResponseType.JSON;
                 }
             }
             else
@@ -85,7 +83,7 @@ namespace R.Component
                 List<JObject> obj = new List<JObject>();
                 foreach (var f in Directory.EnumerateFiles(SavePath, "*.json"))
                 {
-                    var o=JObject.Parse(System.IO.File.ReadAllText(f, Encoding.UTF8));
+                    var o = JObject.Parse(System.IO.File.ReadAllText(f, Encoding.UTF8));
                     obj.Add(o);
                 }
                 ctx.ResponseType = ResponseType.JSON;
@@ -94,7 +92,7 @@ namespace R.Component
 
         void Delete(IRequestContext ctx)
         {
-            
+
         }
 
         void GetAll(IRequestContext ctx)
@@ -128,7 +126,7 @@ namespace R.Component
 
         long MaxIdentity()
         {
-            var files=System.IO.Directory.GetFiles(SavePath);
+            var files = System.IO.Directory.GetFiles(SavePath);
             long max = 0;
             foreach (var f in files)
             {

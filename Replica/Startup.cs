@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using R.Services;
 
 namespace Replica
 {
@@ -34,10 +35,10 @@ namespace Replica
             services.AddRouting();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, R.Services.IRoutingTableService routingTableService, R.Services.ICommandService cmdService, R.Services.IRequestResponseService responseService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IRoutingTableService routingTableService, ICommandService cmdService, IRequestResponseService responseService)
         {
-            //app.ApplicationServices.GetService<X.Services.ISettingsService>().Start(cfg["configPath"]);
-            app.ApplicationServices.GetService<R.Services.IFileWatchService>().Start("c:\\rest");
+            //app.ApplicationServices.GetService<X.Services.ISettingsService>().Start(cfg["configPath"]);            
+            app.ApplicationServices.GetService<R.Services.IFileWatchService>().Start("c:\\rest");            
             app.UseExtendedRouter(routingTableService, cmdService, responseService);
         }
     }

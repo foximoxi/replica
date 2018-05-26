@@ -18,26 +18,24 @@ namespace R.Services
     public class ComponentFactory:IComponentFactory
     {
         public ILogger Log { get; set; }
+        public IPseudoDbService DB;
+        public ComponentFactory(IPseudoDbService db)
+        {
+            this.DB = db;
+        }        
 
         public IComponent Create(IComponentConfig config)
         {
             IComponent res = null;
             if (config is RestConfig)
-                res=CreateComponent(config as RestConfig);
-            if (config is StaticResourceConfig)
-                res=CreateComponent(config as StaticResourceConfig);
+                res = new CustomRestComponent() { Configuration = config, Db = DB };
+            else
+            {
+                if (config is StaticResourceConfig)
+                    res = new StaticResourceComponent() { Configuration = config };
+            }
             res.Init();
             return res;
-        }
-
-        public RestComponent CreateComponent(RestConfig config)
-        {
-            return new CustomRestComponent() { Configuration = config };
-        }
-
-        public StaticResourceComponent CreateComponent(StaticResourceConfig config)
-        {
-            return new StaticResourceComponent() { Configuration = config };
         }
     }
 }

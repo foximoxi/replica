@@ -17,12 +17,14 @@ namespace R.Services
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
         private IComponentFactory ComponentFactory { get; set; }
+        private IPseudoDbService DbService { get; set; }
 
         public ILogger Log { get; private set; }
         public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
 
-        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService,IComponentFactory componentFactory)
+        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService,IComponentFactory componentFactory,IPseudoDbService dbService)
         {
+            DbService = dbService;
             StatusService = statusSvc;
             RoutingTableService = routingTableService;
             ComponentFactory = componentFactory;
@@ -77,6 +79,7 @@ namespace R.Services
             foreach (var p in pkg.PackageFiles.Where(x => x.Status == PackageFileStatus.AnalyzedReady))
             {
                 var c = ComponentFactory.Create(p.Config);
+                DbService.AddCollection("user", "id", "c:\\rest\\user");
                 var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = p.Config.Method };
                 res.Add(ep);
             }
