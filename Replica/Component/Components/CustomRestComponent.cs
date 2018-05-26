@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
@@ -79,7 +80,13 @@ namespace R.Component
             }
             else
             {
-
+                List<JObject> obj = new List<JObject>();
+                foreach (var f in Directory.EnumerateFiles(SavePath, "*.json"))
+                {
+                    var o=JObject.Parse(System.IO.File.ReadAllText(f, Encoding.UTF8));
+                    obj.Add(o);
+                }
+                ctx.ResponseType = ResponseType.JSON;
             }
         }
 
