@@ -16,6 +16,7 @@ namespace R.Component
         public R.Services.IPseudoDbService Db { get; set; }
         R.Component.Config.RestConfig Config { get; set; }
         string SavePath { get; set; }
+        string IdentityFieldName { get; set; }
 
         public async override Task Invoke(IRequestContext ctx)
         {
@@ -66,7 +67,7 @@ namespace R.Component
 
         void Get(IRequestContext ctx)
         {
-            var identity = "{" + Config.Identity + "}";
+            var identity = "{" + IdentityFieldName + "}";
             if (ctx.InputParameters.Count > 0)
             {
                 if (ctx.InputParameters.ContainsKey(identity))
@@ -93,7 +94,7 @@ namespace R.Component
 
         void Delete(IRequestContext ctx)
         {
-
+            
         }
 
         void GetAll(IRequestContext ctx)
@@ -110,13 +111,13 @@ namespace R.Component
         {
             await Task.Run(() =>
             {
-                if (!String.IsNullOrEmpty(Config.Identity))
+                if (!String.IsNullOrEmpty(IdentityFieldName))
                 {
                     JObject o = JObject.Parse(ctx.BodyString);
-                    var id = (string)o[Config.Identity];
+                    var id = (string)o[IdentityFieldName];
                     if (id == null)
                     {
-                        o[Config.Identity] = id = GetNextIdentity();
+                        o[IdentityFieldName] = id = GetNextIdentity();
                     }
                     var str = Newtonsoft.Json.JsonConvert.SerializeObject(o);
                     System.IO.File.WriteAllText(SavePath + id + ".json", Newtonsoft.Json.JsonConvert.SerializeObject(str), Encoding.UTF8);
