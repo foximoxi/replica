@@ -15,9 +15,9 @@ using Newtonsoft.Json;
 
 namespace R.Services
 {
-    public class PseudoDbService
+    public class PseudoDbService: IPseudoDbService
     {
-        Dictionary<string, Collection> ObjectCollections { get; set; }
+        public Dictionary<string, Collection> ObjectCollections { get; set; }
     }
 
     public class Collection

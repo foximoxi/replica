@@ -24,6 +24,7 @@ namespace Replica
         {
             services.AddSingleton<R.Services.IStatusServices, R.Services.StatusService>();
             services.AddSingleton<R.Services.ICommandService, R.Services.CommandService>();
+            services.AddSingleton<R.Services.IPseudoDbService, R.Services.PseudoDbService>();
             services.AddSingleton<R.Services.IFileWatchService, R.Services.FileWatchService>();
             services.AddSingleton<R.Services.IRoutingTableService, R.Services.RoutingTableService>();
             services.AddSingleton<R.Services.IConfigurationService, R.Services.ConfigurationService>();
