@@ -35,17 +35,44 @@ namespace R.Component
         }
 
         public override void Init()
-        {
+        {            
             this.Config = this.Configuration as Config.RestConfig;
-            this.SavePath = System.IO.Path.Combine("c:\\rest\\" + R.Component.RestComponent.SHA1(this.Config.Uri) + "\\");
+            this.SavePath = System.IO.Path.Combine("c:\\rest\\" + PreparePath() + "\\");
+            if (System.IO.Directory.Exists(SavePath) == false)
+                System.IO.Directory.CreateDirectory(SavePath);
         }
 
+        string RemoveBrackets(string s)
+        {
+            var start=s.IndexOf("{");
+            var end = s.IndexOf("}");
+            if ((start != -1) && (end != -1))
+                if (start < end)
+                    s = s.Substring(0, start - 1) + s.Substring(end+1);
+            return s;
+        }
+        string PreparePath()
+        {
+            var s=this.Config.Uri.Replace("/", ".");
+            s = RemoveBrackets(s);
+            if (s[0] == '.')
+                s = s.Substring(1);
+            if (s[s.Length - 1] == '.')
+                s = s.Substring(0, s.Length - 2);
+            return s;
+        }
 
         void Get(IRequestContext ctx)
         {
-            if (ctx.InputParameters.ContainsKey("{" + Config.Identity + "}"))
+            var identity = "{" + Config.Identity + "}";
+            if (ctx.InputParameters.ContainsKey(identity))
             {
-
+                string path = System.IO.Path.Combine(SavePath,ctx.InputParameters[identity] + ".json");
+                if (System.IO.File.Exists(path))
+                {
+                    ctx.Response = System.IO.File.ReadAllText(path, Encoding.UTF8);
+                    ctx.ResponseType = ResponseType.JSON;
+                }
             }
         }
 
@@ -77,19 +104,33 @@ namespace R.Component
                         o[Config.Identity] = id = GetNextIdentity();
                     }
                     var str = Newtonsoft.Json.JsonConvert.SerializeObject(o);
-                    if (System.IO.Directory.Exists(SavePath) == false)
-                        System.IO.Directory.CreateDirectory(SavePath);
                     System.IO.File.WriteAllText(SavePath + id + ".json", Newtonsoft.Json.JsonConvert.SerializeObject(str), Encoding.UTF8);
                     ctx.Response = str;
                 }
             });
         }
 
-        int cnt = 0;
+        long MaxIdentity()
+        {
+            var files=System.IO.Directory.GetFiles(SavePath);
+            long max = 0;
+            foreach (var f in files)
+            {
+                if (Int64.TryParse(System.IO.Path.GetFileName(f), out long res))
+                    if (res > max)
+                        max = res;
+            }
+            return max;
+        }
+
         string GetNextIdentity()
         {
-            cnt++;
-            return cnt.ToString();
+            lock (this)
+            {
+                var cnt = MaxIdentity();
+                cnt++;
+                return cnt.ToString();
+            }
         }
     }
 
