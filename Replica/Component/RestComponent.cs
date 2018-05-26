@@ -39,7 +39,7 @@ namespace R.Component
             await context.Response.WriteAsync("hello");
         }
 
-        protected async void ReturnErrorMessage(RequestStatus stage, HttpContext context, R.Public.ValidationResult validationResult)
+        protected async void ReturnErrorMessage(RequestStatus stage, HttpContext context)
         {
             //var err = new ErrorResponder();
             //var errMsg = err.PrepareErrorMessage(validationResult, stage);
