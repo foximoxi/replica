@@ -13,6 +13,7 @@ namespace R.Component
 {
     public class CustomRestComponent : RestComponent
     {
+        public R.Services.IPseudoDbService Db { get; set; }
         R.Component.Config.RestConfig Config { get; set; }
         string SavePath { get; set; }
 

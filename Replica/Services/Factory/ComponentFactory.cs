@@ -11,10 +11,11 @@ using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Reflection;
 using R.Component.Config;
+using R.Component;
 
-namespace R.Component
+namespace R.Services
 {
-    public class ComponentFactory
+    public class ComponentFactory:IComponentFactory
     {
         public ILogger Log { get; set; }
 

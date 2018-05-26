@@ -16,14 +16,16 @@ namespace R.Services
     {
         private IStatusServices StatusService { get; set; }
         private IRoutingTableService RoutingTableService { get; set; }
+        private IComponentFactory ComponentFactory { get; set; }
 
         public ILogger Log { get; private set; }
         public DateTime LastUpdateTime { get; private set; } = DateTime.MinValue;
 
-        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService)
+        public ConfigurationUpdateService(ILoggerFactory logger, IStatusServices statusSvc, IRoutingTableService routingTableService,IComponentFactory componentFactory)
         {
             StatusService = statusSvc;
             RoutingTableService = routingTableService;
+            ComponentFactory = componentFactory;
             statusSvc.Status[typeof(ConfigurationUpdateService).Name] = ServiceStatus.Running;
             Log = logger.CreateLogger(nameof(ConfigurationUpdateService));
         }
@@ -71,11 +73,10 @@ namespace R.Services
 
         List<IEndPoint> EndPoints(R.Config.Update.IUpdatePackage pkg)
         {
-            ComponentFactory factory = new ComponentFactory();
             List<IEndPoint> res = new List<IEndPoint>();
             foreach (var p in pkg.PackageFiles.Where(x => x.Status == PackageFileStatus.AnalyzedReady))
             {
-                var c = factory.Create(p.Config);
+                var c = ComponentFactory.Create(p.Config);
                 var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = p.Config.Method };
                 res.Add(ep);
             }
