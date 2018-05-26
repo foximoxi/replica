@@ -65,14 +65,21 @@ namespace R.Component
         void Get(IRequestContext ctx)
         {
             var identity = "{" + Config.Identity + "}";
-            if (ctx.InputParameters.ContainsKey(identity))
+            if (ctx.InputParameters.Count > 0)
             {
-                string path = System.IO.Path.Combine(SavePath,ctx.InputParameters[identity] + ".json");
-                if (System.IO.File.Exists(path))
+                if (ctx.InputParameters.ContainsKey(identity))
                 {
-                    ctx.Response = System.IO.File.ReadAllText(path, Encoding.UTF8);
-                    ctx.ResponseType = ResponseType.JSON;
+                    string path = System.IO.Path.Combine(SavePath, ctx.InputParameters[identity] + ".json");
+                    if (System.IO.File.Exists(path))
+                    {
+                        ctx.Response = System.IO.File.ReadAllText(path, Encoding.UTF8);
+                        ctx.ResponseType = ResponseType.JSON;
+                    }
                 }
+            }
+            else
+            {
+
             }
         }
 
