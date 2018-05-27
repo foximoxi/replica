@@ -79,7 +79,7 @@ namespace R.Services
             foreach (var p in pkg.PackageFiles.Where(x => x.Status == PackageFileStatus.AnalyzedReady))
             {
                 var c = ComponentFactory.Create(p.Config);
-                DbService.AddCollection("user", "id", "c:\\rest\\user");
+                DbService.AddCollection("user", "id");
                 var ep = new RestEndPoint() { Uri = p.Config.Uri, Component = c, Method = p.Config.Method };
                 res.Add(ep);
             }

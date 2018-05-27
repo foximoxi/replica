@@ -18,6 +18,6 @@ namespace R.Services
     public interface IPseudoDbService
     {
         Dictionary<string, Collection> ObjectCollections { get; set; }
-        void AddCollection(string name, string identityName, string path);
+        void AddCollection(string name, string identityName);
     }
 }

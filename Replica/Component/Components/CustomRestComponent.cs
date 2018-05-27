@@ -15,6 +15,7 @@ namespace R.Component
     public class CustomRestComponent : RestComponent
     {
         public R.Services.IPseudoDbService Db { get; set; }
+        string CollectionName { get; set; }
         R.Component.Config.RestConfig Config { get; set; }
         string SavePath { get; set; }
         string IdentityFieldName { get; set; }
@@ -24,13 +25,13 @@ namespace R.Component
             switch (ctx.HttpMethod)
             {
                 case HttpMethod.PUT:
-                    Put(ctx);
+                    await Put(ctx);
                     break;
                 case HttpMethod.POST:
                     await Post(ctx);
                     break;
                 case HttpMethod.DELETE:
-                    Delete(ctx);
+                    await Delete(ctx);
                     break;
                 case HttpMethod.GET:
                     Get(ctx);
@@ -42,9 +43,8 @@ namespace R.Component
         {
             this.Config = this.Configuration as Config.RestConfig;
             IdentityFieldName = this.Config.Identity;
-            this.SavePath = System.IO.Path.Combine("c:\\rest\\" + PreparePath() + "\\");
-            if (System.IO.Directory.Exists(SavePath) == false)
-                System.IO.Directory.CreateDirectory(SavePath);
+            CollectionName = this.Config.JsonSchema.Title;
+            Db.AddCollection(CollectionName, this.Config.Identity);
         }
 
         string RemoveBrackets(string s)
@@ -74,7 +74,7 @@ namespace R.Component
             {
                 if (ctx.InputParameters.ContainsKey(identity))
                 {
-                    ctx.Response = this.Db.ObjectCollections["user"].Get(ctx.InputParameters[identity]);
+                    ctx.Response = this.Db.ObjectCollections[CollectionName].Get(ctx.InputParameters[identity]);
                     ctx.ResponseType = ResponseType.JSON;
                 }
             }
@@ -90,9 +90,12 @@ namespace R.Component
             }
         }
 
-        void Delete(IRequestContext ctx)
+        async Task Delete(IRequestContext ctx)
         {
-
+            await Task.Run(()=>
+            {
+                Db.ObjectCollections[CollectionName].Delete(ctx.InputParameters["{"+IdentityFieldName+"}"]);
+            });
         }
 
         void GetAll(IRequestContext ctx)
@@ -100,9 +103,16 @@ namespace R.Component
 
         }
 
-        void Put(IRequestContext ctx)
+        async Task Put(IRequestContext ctx)
         {
-
+            await Task.Run(() =>
+            {
+                if (!String.IsNullOrEmpty(IdentityFieldName))
+                {
+                    ctx.Response = this.Db.ObjectCollections[CollectionName].Update(ctx.BodyString).ToString();
+                    ctx.ResponseType = ResponseType.JSON;
+                }
+            });
         }
 
         async Task Post(IRequestContext ctx)
@@ -111,15 +121,8 @@ namespace R.Component
             {
                 if (!String.IsNullOrEmpty(IdentityFieldName))
                 {
-                    JObject o = JObject.Parse(ctx.BodyString);
-                    var id = (string)o[IdentityFieldName];
-                    if (id == null)
-                    {
-                        o[IdentityFieldName] = id = GetNextIdentity();
-                    }
-                    var str = Newtonsoft.Json.JsonConvert.SerializeObject(o);
-                    System.IO.File.WriteAllText(SavePath + id + ".json", Newtonsoft.Json.JsonConvert.SerializeObject(str), Encoding.UTF8);
-                    ctx.Response = str;
+                    ctx.Response = this.Db.ObjectCollections[CollectionName].Insert(ctx.BodyString).ToString();
+                    ctx.ResponseType = ResponseType.JSON;
                 }
             });
         }

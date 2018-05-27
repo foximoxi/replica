@@ -18,12 +18,12 @@ namespace R.Services
     public class PseudoDbService: IPseudoDbService
     {
         public Dictionary<string, Collection> ObjectCollections { get; set; } = new Dictionary<string, Collection>();
-
-        public void AddCollection(string name,string identityName,string path)
+        public string SavePath { get; set; } = "c:\\rest\\";
+        public void AddCollection(string name,string identityName)
         {
             if (!ObjectCollections.ContainsKey(name))
             {
-                var coll = new Collection() { Name = name, IdentityFieldName = identityName, CollectionPath = path };
+                var coll = new Collection() { Name = name, IdentityFieldName = identityName, CollectionPath = Path.Combine(SavePath,name) };
                 coll.Init();
                 ObjectCollections[name] = coll;
             }
@@ -41,18 +41,20 @@ namespace R.Services
         public void Init()
         {
             IndexCollection();
+            IdentityFieldType = typeof(Int64);
         }
 
-        public void Insert(string json)
+        public JObject Insert(string json)
         {
             var jo = JObject.Parse(json);
             var id = (string)jo[IdentityFieldName];
             if (id == null)
                 jo[IdentityFieldName] = SetNewIdentity();
-            Save(jo, id);
+            Save(jo, jo[IdentityFieldName].ToString());
+            return jo;
         }
         
-        public void Update(string json)
+        public JObject Update(string json)
         {
             var jo = JObject.Parse(json);
             var id = (string)jo[IdentityFieldName];
@@ -60,13 +62,14 @@ namespace R.Services
                 throw new Exception("Not existing resource");
             else
                 Save(jo, id);
+            return jo;
         }
 
         public void Delete(string identity)
         {
             if (Values.ContainsKey(identity))
             {
-                var path = Path.Combine(CollectionPath, identity, ".json");
+                var path = Path.Combine(CollectionPath, identity+ ".json");
                 File.Delete(path);
             }
         }
@@ -86,7 +89,7 @@ namespace R.Services
 
         void Save(JObject j, string id)
         {
-            var path=Path.Combine(CollectionPath, id, ".json");
+            var path=Path.Combine(CollectionPath, id+ ".json");
             System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(j), Encoding.UTF8);
         }
 
