@@ -20,15 +20,17 @@ namespace R.Services
         R.Services.IConfigurationUpdateService UpdateService { get; set; }
         public ILogger Log { get; private set; }
 
-        public FileWatchService(R.Services.IConfigurationUpdateService updateSvc, IStatusServices statusSvc)
+        public FileWatchService(ILoggerFactory logger, R.Services.IConfigurationUpdateService updateSvc, IStatusServices statusSvc)
         {
             UpdateService = updateSvc;
             StatusService = statusSvc;
             statusSvc.Status[typeof(FileWatchService).Name] = ServiceStatus.Initializing;
+            Log = logger.CreateLogger(nameof(FileWatchService));
         }
 
         public void Start(string watchPath)
         {
+            System.Diagnostics.Debug.WriteLine("Watching "+watchPath);
             this.WatchPath = watchPath;
             watcher = new FileSystemWatcher() { Path = WatchPath, IncludeSubdirectories=true };
             watcher.Changed += (sender, e) => { NotifyChangesHandler(sender, e); };
@@ -67,6 +69,7 @@ namespace R.Services
         ICollection<string> GetAllFiles()
         {
             var files = Directory.GetFiles(WatchPath, "*.*", SearchOption.AllDirectories).ToList();
+            Log.LogInformation("Total files found: " + files.Count);
             return files;
         }
 
